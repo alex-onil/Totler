@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Trade_MVC5.Domain.Identity
+namespace Trade_MVC5.Models.Identity
     {
     public static class Roles
         {

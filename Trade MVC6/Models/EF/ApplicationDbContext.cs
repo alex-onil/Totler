@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity.Infrastructure;
-using Trade_MVC5.Domain.Identity;
+using Trade_MVC5.Models.Identity;
 
-namespace Trade_MVC5.Domain.EF
+namespace Trade_MVC5.Models.EF
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         {

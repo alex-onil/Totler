@@ -11,8 +11,8 @@ using Microsoft.Data.Entity;
 using System.Diagnostics;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Trade_MVC5.Domain.EF;
-using Trade_MVC5.Domain.Identity;
+using Trade_MVC5.Models.EF;
+using Trade_MVC5.Models.Identity;
 
 namespace Trade_MVC5
 {

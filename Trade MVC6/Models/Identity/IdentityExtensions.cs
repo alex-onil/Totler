@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
-using Trade_MVC5.Domain.EF;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Extensions.DependencyInjection;
+using Trade_MVC5.Models.EF;
 
-namespace Trade_MVC5.Domain.Identity
+namespace Trade_MVC5.Models.Identity
     {
     public static class IdentityExtensions
         {
