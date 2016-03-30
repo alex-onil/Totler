@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNet.Mvc;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Trade_MVC5.Areas.Api
+namespace Trade_MVC6.Areas.Api
 {
     [Route("api/Products")]
     public class Products : Controller

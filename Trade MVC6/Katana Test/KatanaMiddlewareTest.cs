@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
-namespace Trade_MVC5.Katana_Test
+namespace Trade_MVC6.Katana_Test
 {
     public class KatanaMiddlewareTest
     {

@@ -1,7 +1,9 @@
-﻿@model string
+﻿@using Trade_MVC6.ViewModels.Login
+@model Trade_MVC6.ViewModels.Login.LoginViewModel
+
 <h1>
     This is Login Page!!!
 </h1>
 <h2>
-    Return URL = @Model
+    Return URL = @ViewData["ReturnUrl"]
 </h2>

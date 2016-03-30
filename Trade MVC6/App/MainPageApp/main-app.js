@@ -9,7 +9,9 @@
         'main-app.service'
         // 3rd Party Modules
         
-    ]).config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+    ]).constant("validExternalLink", ["/b2b", "/Login"])
+       .config(["$routeProvider", "$locationProvider", "validExternalLink",
+         function ($routeProvider, $locationProvider, validExternalLink) {
         $locationProvider.html5Mode({
             enabled: true,
             requireBase: true
@@ -30,8 +32,28 @@
             controller: "homeCtrl"
         });
 
-        $routeProvider.otherwise({
+        //$routeProvider.when("/b2b", {
+        //    redirectTo: function (routeParams, path, search) {
+        //        window.location.replace(path);
+        //    }
+        //});
+
+        $routeProvider.when("/", {
             templateUrl: "/views/base.html"
         });
+
+        $routeProvider.when("/Home/Error", {
+            templateUrl: "/views/base.html"
+        });
+
+        $routeProvider.otherwise({
+            redirectTo: function (routeParams, path) {
+                if (validExternalLink.indexOf(path) > -1) {
+                    window.location.replace(path);
+                }
+                return "/Home/Error";
+            }
+        });
+
     }]);
 })();

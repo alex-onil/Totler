@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity.Infrastructure;
-using Trade_MVC5.Models.Identity;
+using Trade_MVC6.Models.Identity;
 
-namespace Trade_MVC5.Models.EF
+namespace Trade_MVC6.Models.EF
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         {

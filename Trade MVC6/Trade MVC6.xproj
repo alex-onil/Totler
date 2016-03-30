@@ -7,7 +7,7 @@
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>401e661b-c63c-4be7-a263-731ec3b83e70</ProjectGuid>
-    <RootNamespace>Trade_MVC5</RootNamespace>
+    <RootNamespace>Trade_MVC6</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\Trade\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\Trade\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
@@ -18,6 +18,9 @@
     <DnxInvisibleContent Include="bower.json" />
     <DnxInvisibleContent Include=".bowerrc" />
     <DnxInvisibleContent Include="package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <DnxInvisibleFolder Include=".vs\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

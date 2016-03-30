@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authorization;
+﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
-
-namespace Trade_MVC5.Areas.B2B.Controllers
+namespace Trade_MVC6.Areas.B2B.Controllers
 {
     [Area("b2b")]
     [Authorize]
