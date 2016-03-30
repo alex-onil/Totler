@@ -1,0 +1,17 @@
+﻿body {
+    /*padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: #fff;
+    color: #34495e;
+    font-family: Lato,Helvetica,Arial,sans-serif;
+    font-size: 18px*/
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+
+/* Настройка навигационной панели */
+.navigation {
+    margin:1em 0 1em 0;
+    min-width: 340px;
+}
