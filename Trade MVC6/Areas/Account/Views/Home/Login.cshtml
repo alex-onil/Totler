@@ -1,0 +1,68 @@
+﻿@using Trade_MVC6.ViewModels.Login
+@model LoginViewModel
+
+<main class="Login-window row">
+    <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
+        <div class="panel panel-default">
+            <img src="~/images/login.jpg" />
+            @using (Html.BeginForm(FormMethod.Post, new { @class = "form-horizontal panel-body", role = "form" }))
+                {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+
+                <div class="form-group">
+                    @*<label class="sr-only" for="exampleInputEmail2">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">*@
+                    @Html.LabelFor(m => m.Email, new { @class = "col-lg-2" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "Введите email" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-lg-2" })
+                    <div class="col-lg-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <label class="checkbox" for="checkbox">
+                            @*<input type="checkbox" data-toggle="checkbox" value="" id="checkbox" required>*@
+                            @Html.CheckBoxFor(m => m.RememberMe, new { data_toggle = "checkbox", id = "checkbox" })
+                            Запомнить ?
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <button type="submit" class="btn btn-success">Вход</button>
+                        <button type="button" class="btn btn-primary">Регистрация</button>
+                    </div>
+                </div>
+
+                }
+            <script>
+                $(function () {
+                    $('[data-toggle="checkbox"]').radiocheck();
+                });
+            </script>
+
+        </div>
+    </div>
+</main>
+
+@*<form class="form-inline" role="form">
+
+        <div class="form-group">
+            <label class="sr-only" for="exampleInputPassword2">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label class="checkbox" for="checkbox2">
+                <input type="checkbox" data-toggle="checkbox" value="" id="checkbox2" required>
+                Remember me
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Вход</button>
+        <button type="button" class="btn btn-default">Регистрация</button>
+    </form>*@

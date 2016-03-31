@@ -1,0 +1,12 @@
+﻿@charset "utf-8";
+
+.Login-window {
+    margin: 1em;
+    min-width: 320px;
+}
+
+.Login-window img {
+    display: block;
+    margin: auto;
+}
+

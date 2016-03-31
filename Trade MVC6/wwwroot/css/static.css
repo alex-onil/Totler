@@ -1,0 +1,600 @@
+﻿@charset "utf-8";
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    outline: none !important;
+}
+
+/*File-Selector*/
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+
+    .fileinput-button input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+/*-----*/
+/* Start Header Style */
+header {
+    /*background-color:lightgoldenrodyellow;*/
+    color: #818084;
+    padding: .5em 0 .5em 0;
+    font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+}
+
+    header > div > span {
+        margin-top: 0.4em;
+        font-size: x-large;
+    }
+
+#logo {
+    width: 80px;
+}
+
+#phone {
+    font-size: large;
+}
+ 
+    #phone span {
+        border-bottom: solid thin #818084;
+    }
+/* End Header Style */
+
+/* Start Nav Style */
+/*nav > div:first-child {
+ border-bottom: 2px solid #fab548;
+}*/
+#search-bar {
+    margin-top: .4em;
+}
+/* End Nav Style */
+
+/* Start Footer Style */
+footer {
+    background-color: #ffffd5;
+    font-size: small;
+    color: #818084;
+    font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+    padding-top: 1em;
+}
+
+    footer b {
+        color: black;
+    }
+
+    footer a {
+        color: #818084;
+    }
+
+        footer a:hover {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    footer td {
+        padding: 5px;
+        padding-left: 1em;
+    }
+
+#intelpartnerlogo {
+    margin-top: 2em;
+    width: 180px;
+}
+/* End Footer Style */
+
+/* Custom Container Style */
+#uContainer {
+    margin: 1em 0 1em 0;
+}
+/* Custom Container Style */
+
+.posbottom {
+    display: table-cell;
+}
+
+.plogo {
+    width: 100%;
+}
+
+    .plogo img {
+        height: 80px;
+        width: auto;
+    }
+/* Блок свойств О компании */
+.partnerlist h1 {
+    text-decoration: underline;
+}
+
+.partnerlist {
+    margin: 2em 0 2em 0;
+}
+
+    .partnerlist p {
+        text-indent: 4em;
+        text-align: justify;
+    }
+
+    .partnerlist section {
+        margin: 1em 0 1em 0;
+        min-width: 400px;
+        -webkit-columns: 200px 3;
+        -moz-columns: 200px 3;
+        columns: 200px 3;
+        -webkit-column-gap: 30px;
+        -moz-column-gap: 30px;
+        column-gap: 30px;
+    }
+
+        .partnerlist section img {
+            float: left;
+            height: 80px;
+            width: auto;
+            margin: 20px;
+        }
+
+/* Check serial part */
+.checkserial {
+    margin: 2em 0 3em 0;
+    font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+    min-width: 480px;
+}
+
+    .checkserial h1 {
+        font-size: small;
+        margin: 0;
+    }
+
+    .checkserial h2 {
+        font-size: medium;
+    }
+
+    .checkserial table {
+        margin-top:1em;
+        width: 100%;
+        vertical-align: middle;
+        text-align: center;
+        table-layout: fixed;
+    }
+
+    .checkserial td {
+        padding: 5px;
+    }
+
+    .checkserial th {
+        padding: 5px;
+    }
+/* Server info and storage info start */
+.rev_info {
+    -moz-min-width: 320px;
+    -ms-min-width: 320px;
+    -o-min-width: 320px;
+    -webkit-min-width: 320px;
+    min-width: 320px;
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 2em 0 3em 0;
+    /*padding:2em;*/
+}
+
+    .rev_info img {
+        padding: 10px;
+        height: 240px;
+        width: auto;
+    }
+
+    .rev_info table {
+        margin-top: 3em;
+    }
+
+    .rev_info p {
+        text-align: justify;
+        text-indent: 4em;
+    }
+
+    .rev_info h3 {
+        font-size: x-large;
+        font-weight: bold;
+        color: #818084;
+    }
+/* Server info end */
+/* Contacts part */
+.contact {
+    font-size: medium;
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 1em 0 2em 0;
+    -moz-min-width: 320px;
+    -ms-min-width: 320px;
+    -o-min-width: 320px;
+    -webkit-min-width: 320px;
+    min-width: 320px; /* надо блоки ограничивать по изменению ширины */
+    min-height: 11em;
+}
+
+    .contact h1 {
+        font-size: larger;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .contact img {
+        height: 1em;
+        width: auto;
+        margin-left: 0.5em;
+    }
+
+    .contact address > strong {
+        margin-bottom: 1em;
+    }
+
+    .contact br + img {
+        margin-left: 0;
+    }
+/* Contacts part end */
+/* режим просмотра сертифкатов*/
+.sert {
+    min-width: 400px;
+    margin: 2em 0 2em 0;
+    text-indent: 4em;
+}
+
+    .sert h1 {
+        font-size: x-large;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 1em;
+    }
+
+    .sert h2 {
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .sert img {
+        height: 200px;
+        width: auto;
+        -ms-opacity: .7;
+        opacity: .7;
+    }
+
+    .sert section {
+        height: 250px;
+    }
+/* Список сертифкатов конец */
+/*Решения*/
+.solutions {
+    min-width: 400px;
+    margin: 2em 0 2em 0;
+}
+
+    .solutions img {
+        height: auto;
+        width: 200px;
+        margin: 2px 2px 2px 2px;
+        -ms-opacity: .7;
+        opacity: .7;
+    }
+
+    .solutions h1 {
+        font-size: x-large;
+        text-decoration: underline;
+    }
+/*Конец решений*/
+/*Вакансии*/
+.vacancy {
+    margin: 2em 0 2em 0;
+    min-width: 400px;
+}
+
+    .vacancy h1 {
+        font-size: x-large;
+        margin: 1em 0 1em 0;
+    }
+
+    .vacancy p {
+        text-indent: 4em;
+    }
+/*Конец вакансий*/
+/* Элементы как проехать */
+.drive {
+    min-width: 400px;
+}
+
+    .drive p {
+        text-indent: 2em;
+        text-align: justify;
+    }
+
+    .drive h1 {
+        font-size: large;
+    }
+/* Базовые отступы информационной модели */
+.basic_article_margin {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.in_form {
+    margin-top: 0.5em;
+    margin-bottom: 2em;
+}
+
+.in_line {
+    display: inline;
+}
+/*Карусель*/
+.carousel {
+    margin-top: .5em;
+}
+
+    .carousel img {
+        width: 100%;
+    }
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none;
+    outline: none;
+}
+/* Новостной блок */
+.news-block {
+    margin: 3em 0 3em 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-width: 240px;
+}
+
+    .news-block img {
+        left: 50%;
+        margin: 0 0 1em 0;
+        /*-70px;*/
+    }
+
+    .news-block p {
+        text-align: center;
+        font-size: large;
+        color: darkgray;
+    }
+
+    .news-block h2 {
+        text-align: center;
+        font-size: x-large;
+        font-weight: 600;
+        color: gray;
+    }
+
+.bepartner {
+    min-width: 960px;
+    position: relative;
+}
+
+    .bepartner img {
+        margin: 2em 0 2em 0;
+        width: 100%;
+        height: auto;
+        opacity: .60;
+    }
+
+    .bepartner section {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 30%;
+    }
+
+    .bepartner p {
+        font-weight: 400;
+        font-size: large;
+        color: black;
+    }
+
+    .bepartner h2 {
+        font-weight: bolder;
+        font-size: x-large;
+        color: darkslategray;
+    }
+/*BuyServer*/
+.buyserver {
+    min-width: 960px;
+    margin: 10em 0 10em 0;
+    table-layout: fixed;
+}
+
+    .buyserver td {
+        width: 50%;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    /*.buyserver a {
+        display: block;
+    }*/
+
+    .buyserver img {
+        display: none;
+        /*opacity:0;*/
+        /*width:300px;*/
+        height:360px;
+        width: auto;
+
+        position: absolute;
+        left: 20px;
+        top: 60px;
+    }
+    .buyserver .cycler {
+        position:relative;
+        height:400px;
+        width: auto;
+    }
+/* SelectedNews Block */
+.SelectedNews {
+    margin: 2em 0 2em 0;
+    min-width: 720px;
+}
+
+    .SelectedNews img {
+        float: left;
+        margin: 1em;
+    }
+
+    .SelectedNews h2 {
+        margin-bottom: .5em;
+        font-size: xx-large;
+    }
+
+    .SelectedNews p {
+        font-size: large;
+        text-indent: 4em;
+        text-align: justify;
+    }
+
+    .SelectedNews table {
+        width: 100%;
+        table-layout: fixed;
+        font-size: large;
+        margin-top: 1em;
+        text-align: center;
+    }
+/* All news */
+.newsAll {
+    margin: 2em 0 2em 0;
+}
+
+    .newsAll p {
+        text-indent: 4em;
+        font-size: large;
+        font-weight: 400;
+        color: grey;
+    }
+
+    .newsAll h1 {
+        font-size: xx-large;
+        text-decoration: underline;
+        color: dimgray;
+        font-weight: bold;
+    }
+
+    .newsAll h2 {
+        font-size: larger;
+        font-weight: bold;
+        color: dimgray;
+    }
+
+    .newsAll img {
+        width: 100%;
+    }
+
+    .newsAll td {
+        padding: 1em 2em 1em 0;
+        vertical-align: middle;
+    }
+/* Ошибки достоверности моделей */
+.field-validation-error {
+    color: #f00;
+    /*border: 1px solid #f00;*/
+    /*background-color: #fee;*/
+}
+
+.field-validation-vaild {
+    display: none;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    font-size: large;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+/* Buy server */
+fieldset.scheduler-border {
+    border: 1px groove #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 1em 0 1.5em 1em;
+    display: none;
+}
+
+legend.scheduler-border {
+    width:inherit; /* Or auto */
+    padding:10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+}
+.serverRequest {
+    margin: 2em 0 2em 0;
+}
+.serverRequest select {
+    font-size: large;
+}
+.serverRequest label {
+    font-size: large;
+}
+
+/* Отступы админ панель */
+#adminPanel {
+    margin:1em 0 1em 0;
+}
+/* request */
+.request {
+    margin: 1em 0 1em 0;
+}
+.request h1 {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom:1em;
+}
+/* requestresult */
+.requestresult {
+    padding:12em 0 12em 0;
+    text-align: center;
+}
+    .requestresult h1 {
+      margin-bottom: 1em;
+    }
+.newSearch {
+    margin: auto;
+    margin-top:1em;
+    margin-bottom:1em;
+}
+.notFoundError {
+    table-layout: fixed;
+    vertical-align: middle;
+    text-align: center;
+    margin: 1em 0 1em 0;
+}
+.notFoundError img {
+    height: 400px;
+    width: auto;
+    text-align: center;
+    margin:20px;
+}
+.notFoundError h1 {
+    font-size: x-large;
+    color: black;
+    font-weight:bold;
+    margin-bottom:1em;
+}
+.notFoundError p {
+    font-size: large;
+    color: gray;
+}
+
+
+
+

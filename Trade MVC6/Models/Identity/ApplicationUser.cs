@@ -7,7 +7,7 @@ namespace Trade_MVC6.Models.Identity
         public static ApplicationUser Admin => 
                     new ApplicationUser
                     {
-                        UserName = "root", 
+                        UserName = "root@totler.by", 
                            
                     };
         }

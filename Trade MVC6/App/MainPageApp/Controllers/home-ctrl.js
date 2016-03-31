@@ -11,13 +11,13 @@
         $scope.title = 'homeCtrl';
         $scope.params = $routeParams;
         $scope.products = products.query();
-        console.log(products);
+        //console.log(products);
         $scope.products.$promise.then(function(result) {
-            console.log(result);
+            //console.log(result);
         });
         // console.log($scope.products);
-        activate();
+        //activate();
 
-        function activate() { }
+        //function activate() { }
     }
 })();

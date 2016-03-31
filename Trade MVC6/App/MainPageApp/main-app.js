@@ -32,15 +32,37 @@
             controller: "homeCtrl"
         });
 
-        //$routeProvider.when("/b2b", {
-        //    redirectTo: function (routeParams, path, search) {
-        //        window.location.replace(path);
-        //    }
-        //});
-
         $routeProvider.when("/", {
             templateUrl: "/views/base.html"
         });
+
+        // Static view
+
+        $routeProvider.when("/Home/Contacts", {
+            templateUrl: "/views/MainPageApp/Contacts.html"
+        });
+        
+        $routeProvider.when("/Home/Server", {
+            templateUrl: "/views/MainPageApp/Servers.html"
+        });
+
+        $routeProvider.when("/Home/Storage", {
+            templateUrl: "/views/MainPageApp/Storage.html"
+        });
+
+        $routeProvider.when("/Home/Certificates", {
+            templateUrl: "/views/MainPageApp/Certificates.html"
+        });
+
+        $routeProvider.when("/Home/Partners", {
+            templateUrl: "/views/MainPageApp/Partners.html"
+        });
+
+        $routeProvider.when("/Home/Vacancies", {
+            templateUrl: "/views/MainPageApp/Vacancies.html"
+        });
+        
+        // Error page
 
         $routeProvider.when("/Home/Error", {
             templateUrl: "/views/base.html"
@@ -50,6 +72,7 @@
             redirectTo: function (routeParams, path) {
                 if (validExternalLink.indexOf(path) > -1) {
                     window.location.replace(path);
+                    return path;
                 }
                 return "/Home/Error";
             }

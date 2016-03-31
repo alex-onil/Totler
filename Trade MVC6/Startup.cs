@@ -55,7 +55,7 @@ namespace Trade_MVC5
             // Configure Identity service
             services.Configure<IdentityOptions>(setup =>
             {
-                setup.Cookies.ApplicationCookie.LoginPath = new Microsoft.AspNet.Http.PathString("/Login");
+                setup.Cookies.ApplicationCookie.LoginPath = new Microsoft.AspNet.Http.PathString("/Account/Home/Login");
             });
 
             // Add framework services.

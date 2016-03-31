@@ -1,0 +1,63 @@
+﻿<div class="row navigation">
+    <nav class="navbar navbar-default col-sm-12" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="/">Totler Electonics</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+            <ul class="nav navbar-nav">
+                @*<li><a href="#fakelink">Продукция</a></li> *@ @*class="active"*@
+                <li class="btn-group">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Продукция <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Home/Server">Серверы</a></li>
+                        <li><a href="/Home/Storage">Системы хранения данных</a></li>
+                        <li class="divider"></li>
+                        <li class="disabled"><a href="#">Мониторы</a></li>
+                        <li class="disabled"><a href="#">Телевизоры</a></li>
+                        <li class="disabled"><a href="#">Профессиональные панели</a></li>
+                    </ul>
+                </li>
+                <li class="btn-group">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Поддержка <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Статус гарантии</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Файловый архив</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Home/Contacts">Контакты</a></li>
+                <li class="btn-group">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        О компании <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Home/Certificates">Лицензии и сертификаты</a></li>
+                        <li><a href="/Home/Partners">Наши партнеры</a></li>
+                        <li><a href="/Home/Vacancies">Вакансии</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Фотоархив</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" action="#" role="search">
+                <div class="form-group">
+                    <div class="input-group input-group-rounded">
+                        <input class="form-control" id="navbarInput-01" type="search" placeholder="Поиск ...">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn"><span class="fui-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <a href="@Url.Action("Index", "Home", new { area = "b2b" })"
+               class="btn btn-default navbar-btn navbar-right btn-xs">B2B</a>
+        </div><!-- /.navbar-collapse -->
+    </nav><!-- /navbar -->
+</div>
