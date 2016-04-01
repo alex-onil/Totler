@@ -9,7 +9,7 @@
         'main-app.service'
         // 3rd Party Modules
         
-    ]).constant("validExternalLink", ["/b2b", "/Login"])
+    ]).constant("validExternalLink", ["/b2b", "/Account/LogOut"])
        .config(["$routeProvider", "$locationProvider", "validExternalLink",
          function ($routeProvider, $locationProvider, validExternalLink) {
         $locationProvider.html5Mode({
@@ -32,7 +32,17 @@
             controller: "homeCtrl"
         });
 
+        // Base View
+
         $routeProvider.when("/", {
+            templateUrl: "/views/base.html"
+        });
+
+        $routeProvider.when("/Home", {
+            templateUrl: "/views/base.html"
+        });
+
+        $routeProvider.when("/Home/Index", {
             templateUrl: "/views/base.html"
         });
 

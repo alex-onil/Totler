@@ -1,3 +1,8 @@
 ﻿<h1>
     This is B2B Index Page!
+    @using (Html.BeginForm("LogOff", "Account", new {area = "Account"}))
+    {
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Выход" class="btn btn-danger btn-lg"/>
+    }
 </h1>

@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../app/mainpageapp/controllers/account.js" />
 /// <reference path="../app/mainpageapp/controllers/home-ctrl.js" />
 /// <reference path="../app/mainpageapp/main-app.js" />
 /// <reference path="../app/mainpageapp/services/main-app.service.js" />

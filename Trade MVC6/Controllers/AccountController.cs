@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using Trade_MVC6.Models.Identity;
 using Trade_MVC6.ViewModels.Login;
 
-namespace Trade_MVC6.Areas.Login.Controllers
+namespace Trade_MVC6.Controllers
     {
-    [Area("Account")]
-    public class HomeController : Controller
+    public class AccountController : Controller
         {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -16,17 +16,17 @@ namespace Trade_MVC6.Areas.Login.Controllers
 
 
 
-        public HomeController(SignInManager<ApplicationUser> signInManager,
+        public AccountController(SignInManager<ApplicationUser> signInManager,
                             UserManager<ApplicationUser> userManager,
                             ILoggerFactory loggerFactory)
             {
             _signInManager = signInManager;
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<HomeController>();
+            _logger = loggerFactory.CreateLogger<AccountController>();
 
             }
 
-        // GET: /Login/Home/Index
+        // GET: /Account/Login
         [HttpGet]
         public IActionResult Login(string returnUrl)
             {
@@ -34,9 +34,8 @@ namespace Trade_MVC6.Areas.Login.Controllers
             return View();
             }
 
-        // POST: /Login/Home/Index
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
+        // POST: /Account/Login
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
             {
             ViewData["ReturnUrl"] = returnUrl;
@@ -51,7 +50,7 @@ namespace Trade_MVC6.Areas.Login.Controllers
 
                     if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
 
-                    RedirectToAction("Index", "Home", new { area = "" });
+                    RedirectToAction("Index", "Home");
                     }
                 if (result.IsLockedOut)
                     {
@@ -64,15 +63,27 @@ namespace Trade_MVC6.Areas.Login.Controllers
             return View(model);
             }
 
+        // GET: /Acoount/LogOut
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            if (User.Identity.IsAuthenticated)
+                await _signInManager.SignOutAsync();
+            _logger.LogInformation(4, "User logged out.");
+            return RedirectToAction("Index", "Home", new { area = "" });
+            } 
+
         //
-        // POST: /Account/Home/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // POST: /Account/LogOff
+        [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> LogOff()
             {
-            await _signInManager.SignOutAsync();
+            if (User.Identity.IsAuthenticated) 
+               await _signInManager.SignOutAsync();
+
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction("Index", "Home", new {area = ""});
+            //return new HttpStatusCodeResult(200);
+            return RedirectToAction("Index", "Home");
             }
         }
     }

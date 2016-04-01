@@ -55,7 +55,9 @@ namespace Trade_MVC5
             // Configure Identity service
             services.Configure<IdentityOptions>(setup =>
             {
-                setup.Cookies.ApplicationCookie.LoginPath = new Microsoft.AspNet.Http.PathString("/Account/Home/Login");
+                setup.Cookies.ApplicationCookie.LoginPath = new Microsoft.AspNet.Http.PathString("/Account/Login");
+                setup.Cookies.ApplicationCookie.LogoutPath = new Microsoft.AspNet.Http.PathString("/Account/LogOff");
+                setup.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(1);
             });
 
             // Add framework services.
@@ -95,6 +97,7 @@ namespace Trade_MVC5
 
             // Using Identity Engine
             app.UseIdentity();
+
             // Check For System Groups
             app.EnsureRolesCreated();
             // Check For Admin User

@@ -10,11 +10,7 @@
     {
         <div>
             Авторизованный пользователь: @User.Identity.Name
-            @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new {area = "Account"}))
-            {
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger btn-sm">Выход</button>
-            }
+            @Html.ActionLink("Выход", "LogOut", "Account", null, new { @class = "btn btn-danger" } )
         </div>
     }
     @*<div ng-controller="homeCtrl">
