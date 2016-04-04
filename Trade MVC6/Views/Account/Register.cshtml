@@ -1,0 +1,107 @@
+﻿@using Trade_MVC6.ViewModels.Account
+@model RegisterViewModel
+<article class="row">
+    <div class="col-md-offset-1 col-md-10 panel panel-default">
+        <h1 class="panel-heading">Страница регистрации пользователей</h1>
+        @using (Html.BeginForm(FormMethod.Post, new { @class = "form-horizontal panel-body", role = "form" }))
+            {
+            @Html.AntiForgeryToken()
+            @*@Html.ValidationSummary()*@
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CompanyName, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.CompanyName)
+                    @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", placeholder = "Название" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "xxx@xxx.xxx" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Имя" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Surname, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.Surname)
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Фамилия" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactPhone, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.ContactPhone)
+                    @Html.TextBoxFor(m => m.ContactPhone, new { @class = "form-control", placeholder = "Контактный телефон" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.SkypeId, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.TextBoxFor(m => m.SkypeId, new { @class = "form-control", placeholder = "Skype Login" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.IcqId, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.TextBoxFor(m => m.IcqId, new { @class = "form-control", placeholder = "ICQ UIN" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-lg-2" })
+                <div class="col-lg-10">
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Повторить пароль" })
+                </div>
+            </div>
+            <input id="confirm" type="button" class="btn btn-success" value="Готово" />
+            @Html.ActionLink("Отмена", "Index", "Home", null, new { @class = "btn btn-danger" })
+            }
+    </div>
+</article>
+<script>
+    $(function () {
+        console.log("Launch Register");
+
+        var handler = function (evt) {
+            console.log("Clicked funct");
+            if (!$("form").valid()) {
+                console.log("Form not valid");
+                $(evt.currentTarget).one(handler);
+            }
+ 
+            var req = {
+                method: 'POST',
+                url: '/Account/Home/LogOff',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'//"application/json; charset=utf-8"
+                }
+            }
+            req.data = $("form").serialize();
+            console.log(req);
+        }
+        $("#confirm").one(handler);
+    });
+</script>

@@ -75,7 +75,8 @@
         // Error page
 
         $routeProvider.when("/Home/Error", {
-            templateUrl: "/views/base.html"
+            templateUrl: "/views/Shared/Error.html",
+            controller: "errorCtrl"
         });
 
         $routeProvider.otherwise({
@@ -84,7 +85,7 @@
                     window.location.replace(path);
                     return path;
                 }
-                return "/Home/Error";
+                return "/Home/Error" + "?Path=" + path;
             }
         });
 

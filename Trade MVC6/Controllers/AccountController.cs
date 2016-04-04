@@ -3,8 +3,9 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
+using Trade_MVC6.Models;
 using Trade_MVC6.Models.Identity;
-using Trade_MVC6.ViewModels.Login;
+using Trade_MVC6.ViewModels.Account;
 
 namespace Trade_MVC6.Controllers
     {
@@ -66,24 +67,41 @@ namespace Trade_MVC6.Controllers
         // GET: /Acoount/LogOut
         [HttpGet]
         public async Task<IActionResult> LogOut()
-        {
+            {
             if (User.Identity.IsAuthenticated)
                 await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
             return RedirectToAction("Index", "Home", new { area = "" });
-            } 
+            }
 
         //
         // POST: /Account/LogOff
         [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> LogOff()
             {
-            if (User.Identity.IsAuthenticated) 
-               await _signInManager.SignOutAsync();
+            if (User.Identity.IsAuthenticated)
+                await _signInManager.SignOutAsync();
 
             _logger.LogInformation(4, "User logged out.");
             //return new HttpStatusCodeResult(200);
             return RedirectToAction("Index", "Home");
             }
+
+        // GET: /Account/Register
+        [HttpGet]
+        public IActionResult Register()
+            {
+            return View(new RegisterViewModel());
+            }
+
+        // POST: /Account/Register[
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid) return PartialView();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         }
     }

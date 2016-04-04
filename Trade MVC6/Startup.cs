@@ -11,7 +11,8 @@ using Microsoft.Data.Entity;
 using System.Diagnostics;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Trade_MVC6.Models.EF;
+using Trade_MVC6.Models.AutoMapper;
+using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity;
 
 namespace Trade_MVC5
@@ -35,7 +36,7 @@ namespace Trade_MVC5
             // Add EF service
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(opt =>
+                .AddDbContext<B2BDbContext>(opt =>
                     opt.UseSqlServer(Configuration["ConnectionStrings:TempDB"]));
 
             //Configure Identity middleware with ApplicationUser and the EF7 IdentityDbContext
@@ -49,7 +50,7 @@ namespace Trade_MVC5
                 config.Password.RequireUppercase = false;
 
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddEntityFrameworkStores<B2BDbContext>()
             .AddDefaultTokenProviders();
 
             // Configure Identity service
@@ -65,6 +66,9 @@ namespace Trade_MVC5
             {
                 //setup.Filters.Add()
             });
+
+            // Configure AutoMapper
+            services.MapperConfigure();
 
         }
 
