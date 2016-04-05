@@ -11,11 +11,16 @@ namespace Trade_MVC6.Models.Identity
         public string Account1CId { get; set; }
         public bool Access1C { get; set; }
 
+        public ApplicationUser()
+        {
+            Contact = new ContactRecord();
+            Access1C = false;
+        }
+
         public static ApplicationUser Admin =>
            new ApplicationUser
                {
                UserName = "root@totler.by",
-
                };
 
         }

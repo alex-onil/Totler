@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Trade_MVC6.Models;
+using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity;
+using Trade_MVC6.Services;
 using Trade_MVC6.ViewModels.Account;
 
 namespace Trade_MVC6.Controllers
@@ -14,15 +16,22 @@ namespace Trade_MVC6.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
-
-
+        private readonly IEmailSender _emailSender;
+        private readonly IMapper _mapper;
+        private readonly B2BDbContext _dbContext;
 
         public AccountController(SignInManager<ApplicationUser> signInManager,
                             UserManager<ApplicationUser> userManager,
-                            ILoggerFactory loggerFactory)
+                            ILoggerFactory loggerFactory, 
+                            IEmailSender emailSender, 
+                            IMapper mapper, 
+                            B2BDbContext dbContext)
             {
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
+            _mapper = mapper;
+            _dbContext = dbContext;
             _logger = loggerFactory.CreateLogger<AccountController>();
 
             }
@@ -96,12 +105,46 @@ namespace Trade_MVC6.Controllers
 
         // POST: /Account/Register[
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterViewModel model)
-        {
+        public async Task<IActionResult> Register(RegisterViewModel model)
+            {
             if (!ModelState.IsValid) return PartialView();
 
-            return RedirectToAction("Index", "Home");
+            var user = new ApplicationUser { Access1C = false };
+            _mapper.Map(model, user);
+            _dbContext.Add(user.Contact, User);
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+                {
+
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                // Send an email with this link
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
+                    protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Подтверждение email учётной записи",
+                    "Подтвердите Вашу учётную запись нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
+                //await _signInManager.SignInAsync(user, isPersistent: false);
+                }
+
+            return PartialView("SuccessRegistration", model.Email);
         }
+
+        // GET: /Account/ConfirmEmail
+        [HttpGet, AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+            {
+            if (userId == null || code == null)
+                {
+                return View("ErrorEmailConfirmation");
+                }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                {
+                return View("ErrorEmailConfirmation");
+                }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View(result.Succeeded ? "SuccessEmailConfirmation" : "ErrorEmailConfirmation");
+            }
 
         }
     }

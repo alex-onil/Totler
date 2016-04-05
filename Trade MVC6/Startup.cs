@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Data.Entity;
-using System.Diagnostics;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Trade_MVC6.Models.AutoMapper;
 using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity;
+using Trade_MVC6.Services;
+using Trade_MVC6.Services.EmailSender;
 
-namespace Trade_MVC5
+namespace Trade_MVC6
 {
     public class Startup
     {
@@ -70,6 +68,8 @@ namespace Trade_MVC5
             // Configure AutoMapper
             services.MapperConfigure();
 
+            // Configure SMTP Robot
+            services.AddInstance<IEmailSender>(new EmailSimpleSender(Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

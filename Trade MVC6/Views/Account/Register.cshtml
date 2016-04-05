@@ -6,7 +6,7 @@
         @using (Html.BeginForm(FormMethod.Post, new { @class = "form-horizontal panel-body", role = "form" }))
             {
             @Html.AntiForgeryToken()
-            @*@Html.ValidationSummary()*@
+            @Html.ValidationSummary(true)
 
             <div class="form-group">
                 @Html.LabelFor(m => m.CompanyName, new { @class = "col-lg-2" })
@@ -65,7 +65,8 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Password, new { @class = "col-lg-2" })
                 <div class="col-lg-10">
-                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                    @Html.TextBoxFor(m => m.Password, new {@class = "form-control", placeholder = "Пароль"})
                 </div>
             </div>
 
@@ -83,25 +84,39 @@
 </article>
 <script>
     $(function () {
-        console.log("Launch Register");
 
         var handler = function (evt) {
             console.log("Clicked funct");
             if (!$("form").valid()) {
-                console.log("Form not valid");
-                $(evt.currentTarget).one(handler);
+                $(evt.currentTarget).one("click",handler);
+                return false;
             }
- 
+
             var req = {
                 method: 'POST',
-                url: '/Account/Home/LogOff',
+                url: "@Url.Action("Register", "Account")",
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'//"application/json; charset=utf-8"
                 }
             }
+
             req.data = $("form").serialize();
-            console.log(req);
+
+            $.ajax(req).then(function (data) {
+                console.log("Ajax OK");
+                $("article").html(data);
+            }, function (jqXHR, textStatus, errorThrown) {
+
+@{#if DEBUG }
+            console.log("Ajax Error");
+            console.log(textStatus, errorThrown);
+@{ #endif }
+                $(evt.currentTarget).one("click", handler);
+            });
+
+            return false;
         }
-        $("#confirm").one(handler);
+
+        $("#confirm").one("click", handler);
     });
 </script>

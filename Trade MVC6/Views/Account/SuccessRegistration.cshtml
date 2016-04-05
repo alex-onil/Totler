@@ -1,0 +1,11 @@
+﻿@model string
+<div class="col-lg-offset-2 col-lg-8 panel panel-default">
+    <div class="panel-body">
+        <h1>Регистрация прошла успешно</h1>
+        <p>
+            Письмо с дальнейшими инструкциями для активации Вашей учетной записи выслано на указанный адрес Email:
+        </p>
+        <p>@Model</p>
+        @Html.ActionLink("Вернуться на главную", "Index", "Home", null, new { @class = "btn btn-success" })
+    </div>
+</div>
