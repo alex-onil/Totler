@@ -22,9 +22,9 @@ namespace Trade_MVC6.Controllers
 
         public AccountController(SignInManager<ApplicationUser> signInManager,
                             UserManager<ApplicationUser> userManager,
-                            ILoggerFactory loggerFactory, 
-                            IEmailSender emailSender, 
-                            IMapper mapper, 
+                            ILoggerFactory loggerFactory,
+                            IEmailSender emailSender,
+                            IMapper mapper,
                             B2BDbContext dbContext)
             {
             _signInManager = signInManager;
@@ -38,8 +38,9 @@ namespace Trade_MVC6.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        public IActionResult Login(string returnUrl)
-            {
+        public IActionResult Login(string returnUrl = null)
+        {
+            var context = HttpContext;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
             }
@@ -65,7 +66,7 @@ namespace Trade_MVC6.Controllers
                 if (result.IsLockedOut)
                     {
                     _logger.LogWarning(2, "Аккаунт заблокирован.");
-                    //return View("Lockout");
+                    return View("_AccountLocked");
                     }
                 ModelState.AddModelError(string.Empty, "Ошибка аутентификации.");
                 return View(model);
@@ -126,8 +127,8 @@ namespace Trade_MVC6.Controllers
                 //await _signInManager.SignInAsync(user, isPersistent: false);
                 }
 
-            return PartialView("SuccessRegistration", model.Email);
-        }
+            return PartialView("_SuccessRegistration", model.Email);
+            }
 
         // GET: /Account/ConfirmEmail
         [HttpGet, AllowAnonymous]
@@ -135,16 +136,92 @@ namespace Trade_MVC6.Controllers
             {
             if (userId == null || code == null)
                 {
-                return View("ErrorEmailConfirmation");
+                return View("_ErrorEmailConfirmation");
                 }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 {
-                return View("ErrorEmailConfirmation");
+                return View("_ErrorEmailConfirmation");
                 }
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "SuccessEmailConfirmation" : "ErrorEmailConfirmation");
+            return View(result.Succeeded ? "_SuccessEmailConfirmation" : "_ErrorEmailConfirmation");
             }
 
+
+        //
+        // GET: /Account/ForgotPassword
+        [HttpGet, AllowAnonymous]
+        public IActionResult ForgotPassword()
+            {
+            return View();
+            }
+
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+            {
+            if (ModelState.IsValid)
+                {
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if (user == null)
+                    {
+                    ModelState.AddModelError("", "Учетная запись с указанным Email не обнаружена.");
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return PartialView();
+                    }
+                if (!(await _userManager.IsEmailConfirmedAsync(user)))
+                    {
+                    ModelState.AddModelError("", "Учетная запись с указанным Email не подтверждена.");
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return PartialView();
+                    }
+
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                // Send an email with this link
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Восстановление пароля",
+                   "Для сброса пароля нажмите на <a href=\"" + callbackUrl + "\">ссылку</a>");
+                return PartialView("_PasswordResetSend", model.Email);
+                }
+            return PartialView(model);
+            }
+
+        //
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+            {
+            return code == null ? View("_ErrorChangePassword") : View(new ResetPasswordViewModel { Code = code});
+            }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+            {
+            if (!ModelState.IsValid)
+                {
+                return PartialView(model);
+                }
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+                {
+                // Don't reveal that the user does not exist
+                return PartialView("_ErrorChangePassword");
+                }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+                {
+                return PartialView("_SuccessPasswordChange");
+                }
+            return PartialView("_ErrorChangePassword");
+            }
         }
     }

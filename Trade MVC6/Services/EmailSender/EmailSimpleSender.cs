@@ -35,28 +35,6 @@ namespace Trade_MVC6.Services.EmailSender
             }
         public Task SendEmailAsync(string email, string subject, string message)
             {
-            //SmtpClient client = new SmtpClient(_smtpServerUrl, _smtpServerPort)
-            //    {
-            //        Timeout = 90000,
-            //        Credentials = new NetworkCredential(_smtpRobotLogin, _smtpRobotPass)
-            //    };
-
-            //MailAddress from = new MailAddress(_smtpRobotLogin, "Totler Robot Mail", System.Text.Encoding.UTF8);
-            //MailAddress to = new MailAddress(email);
-
-            //MailMessage mailmessage = new MailMessage(from, to)
-            //    {
-            //    Body = message
-            //    };
-
-            //mailmessage.Body += message;
-            //mailmessage.BodyEncoding = System.Text.Encoding.UTF8;
-
-            //mailmessage.Subject = subject;
-            //mailmessage.SubjectEncoding = System.Text.Encoding.UTF8;
-
-            //return Task.Run(() => client.Send(mailmessage));
-
             var mimeMessage = new MimeMessage();
             mimeMessage.From.Add(new MailboxAddress("Totler Robot Mail", _smtpRobotLogin));
             mimeMessage.To.Add(new MailboxAddress("Recipient", email));

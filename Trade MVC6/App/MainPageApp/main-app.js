@@ -9,7 +9,7 @@
         'main-app.service'
         // 3rd Party Modules
         
-    ]).constant("validExternalLink", ["/b2b", "/Account/LogOut"])
+    ]).constant("validExternalLink", ["/b2b", "/Account/LogOut", "/Account/Login"]) //
        .config(["$routeProvider", "$locationProvider", "validExternalLink",
          function ($routeProvider, $locationProvider, validExternalLink) {
         $locationProvider.html5Mode({
@@ -80,11 +80,18 @@
         });
 
         $routeProvider.otherwise({
-            redirectTo: function (routeParams, path) {
+            redirectTo: function (routeParams, path, search) {
                 if (validExternalLink.indexOf(path) > -1) {
-                    window.location.replace(path);
-                    return path;
+                    var srch = '';
+                    for(var index in search) {
+                        srch += index + "=" + search[index];
+                    }
+
+                    if (srch === '') window.location.replace(path);
+                    window.location.replace(path + "?" + srch);
+                    return path + "?" + srch;
                 }
+
                 return "/Home/Error" + "?Path=" + path;
             }
         });

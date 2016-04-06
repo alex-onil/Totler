@@ -1,18 +1,21 @@
-﻿@{
+﻿@using System.Threading.Tasks
+@using Trade_MVC6.ViewModels.Home
+@model UserStatusViewModel
+@{
     ViewData["Title"] = "Домашня страница";
 }
 <div class="container">
-    @Html.Partial("Index.Menu")
+    @Html.Partial("Index.Menu", Model)
 
     <ng-view></ng-view>
 
-    @if (User.Identity.IsAuthenticated)
+    @*@if (User.Identity.IsAuthenticated)
     {
         <div>
             Авторизованный пользователь: @User.Identity.Name
             @Html.ActionLink("Выход", "LogOut", "Account", null, new { @class = "btn btn-danger" } )
         </div>
-    }
+    }*@
     @*<div ng-controller="homeCtrl">
         <div class="container">
             <div class="row">

@@ -104,7 +104,7 @@ namespace Trade_MVC6
 
             // Check For System Groups
             app.EnsureRolesCreated();
-            // Check For Admin User
+            // Check For IsAdmin User
             app.EnsureRootCreated();
 
             app.UseMvc(routes =>
