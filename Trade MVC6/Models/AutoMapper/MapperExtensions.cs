@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using Trade_MVC6.Models.AutoMapper.Profiles;
 
 namespace Trade_MVC6.Models.AutoMapper
 {
@@ -13,7 +14,11 @@ namespace Trade_MVC6.Models.AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new MainAppProfile());
+                // ProfileViewModel
+                cfg.AddProfile<ProfileViewModelProfile>();
+
+                // RegisterViewModel
+                cfg.AddProfile<RegisterViewModelProfile>();
             });
             var mapper = config.CreateMapper(); 
             services.AddInstance(typeof(IMapper), mapper);

@@ -5,12 +5,17 @@ namespace Trade_MVC6.ViewModels.Account
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(15, ErrorMessage = "Длинна должна быть в пределах от {0} до {2} символов.", MinimumLength = 3 )]
+        [Display(Name = "Псевдоним")]
+        public string Nickname { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Длинна {0} Должна быть не менее {2} символов.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Длинна должна быть в пределах от {0} до {2} символов.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }

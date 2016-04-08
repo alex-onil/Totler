@@ -20,9 +20,14 @@
             $location.path('/Account/LogOut').search('ReturnUrl', currentUrl);
         }
 
+        vm.profile = function () {
+            var currentUrl = $location.url();
+            $location.path('/Account/Profile').search('ReturnUrl', currentUrl);
+        }
+
         vm.b2b = function () {
             var currentUrl = $location.url();
-            $location.path('/b2b')
+            $location.path('/b2b');
         }
     }
 })();

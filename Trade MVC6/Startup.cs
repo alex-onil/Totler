@@ -12,6 +12,7 @@ using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.Services.EmailSender;
+using Trade_MVC6.Services.JsonSerializer;
 
 namespace Trade_MVC6
 {
@@ -70,6 +71,9 @@ namespace Trade_MVC6
 
             // Configure SMTP Robot
             services.AddInstance<IEmailSender>(new EmailSimpleSender(Configuration));
+
+            //Configure Serializer
+            services.AddInstance<IJsonSerializer>(new SimpleSerializer());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

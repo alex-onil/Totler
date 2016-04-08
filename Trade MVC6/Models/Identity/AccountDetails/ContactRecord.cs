@@ -7,5 +7,6 @@
         public string ContactPhone { get; set; }
         public string SkypeId{ get; set; }
         public string IcqId { get; set; }
+        public ApplicationUser User { get; set; }
         }
 }

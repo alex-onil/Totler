@@ -6,8 +6,7 @@ namespace Trade_MVC6.ViewModels.Account
     {
         [Required]
         [Display(Name = "Логин")]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Login { get; set; }
 
         [Required]
         [Display(Name = "Пароль")]

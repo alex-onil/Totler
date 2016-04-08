@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
+using Trade_MVC6.Models.B2BStrore;
+using Trade_MVC6.Models.Identity.AccountDetails;
 
 namespace Trade_MVC6.Models.Identity
     {
@@ -33,9 +36,23 @@ namespace Trade_MVC6.Models.Identity
                 {
                 var adminUser = ApplicationUser.Admin;
 
-                 // Possible need to check IdentityResult
-                 userManager.CreateAsync(adminUser, "123456").Wait();
-                 userManager.AddToRoleAsync(adminUser, Roles.Admin).Wait();
+
+                // Possible need to check IdentityResult
+
+                var context = app.ApplicationServices.GetService<B2BDbContext>();
+                    var contact = new ContactRecord
+                    {
+                        CreationAuthor = "System",
+                        CreationDate = DateTime.Now,
+                        LastEditDate = DateTime.Now,
+                        LastEditor = "System"
+                    };
+                context.Add(contact);
+                adminUser.Contact = contact;
+                userManager.CreateAsync(adminUser, "123456").Wait();
+
+
+                userManager.AddToRoleAsync(adminUser, Roles.Admin).Wait();
                 }
 
             }

@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Data.Entity;
+using Microsoft.AspNet.Antiforgery;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
@@ -8,6 +11,7 @@ using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.ViewModels.Account;
+using System.Linq;
 
 namespace Trade_MVC6.Controllers
     {
@@ -40,11 +44,9 @@ namespace Trade_MVC6.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            var context = HttpContext;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
             }
-
 
         // POST: /Account/Login
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
@@ -54,14 +56,23 @@ namespace Trade_MVC6.Controllers
                 {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var authUser = await _userManager.FindByNameAsync(model.Login) ?? 
+                               await _userManager.FindByEmailAsync(model.Login);
+
+                if (authUser == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Ошибка аутентификации.");
+                    return View(model);
+                }
+                 
+                var result = await _signInManager.PasswordSignInAsync(authUser, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                     {
                     _logger.LogInformation(1, "User logged in.");
 
                     if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
 
-                    RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                     }
                 if (result.IsLockedOut)
                     {
@@ -201,9 +212,7 @@ namespace Trade_MVC6.Controllers
 
         //
         // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
             {
             if (!ModelState.IsValid)
@@ -223,5 +232,17 @@ namespace Trade_MVC6.Controllers
                 }
             return PartialView("_ErrorChangePassword");
             }
+
+        [HttpGet, Authorize]
+        public async Task<IActionResult> Profile(string returnUrl)
+        {
+            var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
+            var currentProfileViewModel = new ProfileViewModel();
+            _mapper.Map(currentUser, currentProfileViewModel);
+            ViewData["returnUrl"] = returnUrl;
+            return PartialView(currentProfileViewModel);
+        }
+
+
         }
     }
