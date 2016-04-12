@@ -60,6 +60,15 @@ namespace Trade_MVC6
                 setup.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(1);
             });
 
+            // Antiforgery RC1 have Bug
+
+            //services.ConfigureAntiforgery(options =>
+            //{
+            //    options.CookieName = Configuration["AntiForgery:CookieName"];
+            //    options.RequireSsl = false;
+            //});
+
+
             // Add framework services.
             services.AddMvc(setup =>
             {

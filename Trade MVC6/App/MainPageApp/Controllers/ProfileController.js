@@ -5,9 +5,9 @@
         .module('mainApp')
         .controller('ProfileController', ProfileController);
 
-    ProfileController.$inject = ['$location']; 
+    ProfileController.$inject = ['$location', 'dataService'];
 
-    function ProfileController($location) {
+    function ProfileController($location, dataService) {
         /* jshint validthis:true */
 
         // variable
@@ -43,6 +43,15 @@
                 return;
             }
             $location.url("/");
+        }
+
+        vm.save = function () {
+            
+            dataService.sendForm($location.path(), vm.data, vm.antiforgery).then(function () {
+                console.log("Form sended");
+            }, function() {
+                console.log("Form send Error");
+            });
         }
 
     }

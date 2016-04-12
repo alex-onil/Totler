@@ -15,14 +15,14 @@
             <div class="form-group">
                 <label class="col-lg-2">Псевдоним</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Nickname" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Nickname" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-2">Компания</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.CompanyName" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.CompanyName" type="text"/>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label class="col-lg-2">Email</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Email" type="text" readonly />
+                    <input class="form-control" ng-model="Ctrl.data.Email" type="text" readonly/>
                 </div>
             </div>
 
@@ -52,40 +52,40 @@
             <div class="form-group">
                 <label class="col-lg-2">Имя</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Contact.Name" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Contact.Name" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-2">Фамилия</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Contact.Surname" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Contact.Surname" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-2">Телефон</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Contact.ContactPhone" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Contact.ContactPhone" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-2">Skype</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Contact.SkypeId" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Contact.SkypeId" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-2">ICQ</label>
                 <div class="col-lg-10">
-                    <input class="form-control" ng-model="Ctrl.data.Contact.IcqId" type="text" />
+                    <input class="form-control" ng-model="Ctrl.data.Contact.IcqId" type="text"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <button class="btn btn-primary">Сохранить</button>
+                <button class="btn btn-primary" ng-click="Ctrl.save()">Сохранить</button>
                 <button class="btn btn-warning" ng-click="Ctrl.cancel()">Отмена</button>
                 <button class="btn btn-default" ng-click="Ctrl.debug()">Debug</button>
             </div>

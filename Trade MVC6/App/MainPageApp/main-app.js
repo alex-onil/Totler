@@ -115,5 +115,14 @@
                  }
              });
 
-         }]);
+         }])
+       .run(['$rootScope', '$location', function($rootScope, $location) {
+           // register listener to watch route changes
+           $rootScope.$on("$routeChangeStart", function (event, next, current) {
+                //  Just for test )
+                //console.log(next);
+                //console.log(current);
+            });
+        }]);
+
 })();

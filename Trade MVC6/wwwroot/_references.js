@@ -4,6 +4,7 @@
 /// <reference path="../app/mainpageapp/controllers/menucontroller.js" />
 /// <reference path="../app/mainpageapp/controllers/profilecontroller.js" />
 /// <reference path="../app/mainpageapp/main-app.js" />
+/// <reference path="../app/mainpageapp/services/dataservice.js" />
 /// <reference path="../app/mainpageapp/services/main-app.service.js" />
 /// <reference path="../gulpfile.js" />
 /// <reference path="js/angular-app.min.js" />

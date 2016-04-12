@@ -12,6 +12,8 @@ using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.ViewModels.Account;
 using System.Linq;
+using Trade_MVC6.Attributes;
+using Trade_MVC6.Helpers;
 
 namespace Trade_MVC6.Controllers
     {
@@ -43,7 +45,7 @@ namespace Trade_MVC6.Controllers
         // GET: /Account/Login
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
-        {
+            {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
             }
@@ -56,15 +58,15 @@ namespace Trade_MVC6.Controllers
                 {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var authUser = await _userManager.FindByNameAsync(model.Login) ?? 
+                var authUser = await _userManager.FindByNameAsync(model.Login) ??
                                await _userManager.FindByEmailAsync(model.Login);
 
                 if (authUser == null)
-                {
+                    {
                     ModelState.AddModelError(string.Empty, "Ошибка аутентификации.");
                     return View(model);
-                }
-                 
+                    }
+
                 var result = await _signInManager.PasswordSignInAsync(authUser, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                     {
@@ -207,7 +209,7 @@ namespace Trade_MVC6.Controllers
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
             {
-            return code == null ? View("_ErrorChangePassword") : View(new ResetPasswordViewModel { Code = code});
+            return code == null ? View("_ErrorChangePassword") : View(new ResetPasswordViewModel { Code = code });
             }
 
         //
@@ -233,16 +235,24 @@ namespace Trade_MVC6.Controllers
             return PartialView("_ErrorChangePassword");
             }
 
+        // GET: /Account/Profile
         [HttpGet, Authorize]
         public async Task<IActionResult> Profile(string returnUrl)
-        {
+            {
             var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
             var currentProfileViewModel = new ProfileViewModel();
             _mapper.Map(currentUser, currentProfileViewModel);
             ViewData["returnUrl"] = returnUrl;
             return PartialView(currentProfileViewModel);
-        }
+            }
 
+        // POST: /Account/Profile
+        [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/Profile")]
+        public async Task<IActionResult> SaveProfile([FromBody] ProfileViewModel model)
+        {
+            // var a = Request;
+            return Ok();
+        }
 
         }
     }
