@@ -9,7 +9,8 @@
 
     function dataService($http) {
         var service = {
-            sendForm: sendFormData
+            sendForm: sendFormData,
+            sendRequest: sendRequestByUrl,
         };
 
         return service;
@@ -18,7 +19,7 @@
 
         function sendFormData(url, data, antiForgeryToken) {
 
-            if (url === "" || angular.isUndefined(url)) return;
+            if (url === "" || angular.isUndefined(url)) return $q.reject("No Url in Request");
 
             var req = {
                 method: 'POST',
@@ -38,5 +39,12 @@
 
             return $http(req);
         }
+
+        function sendRequestByUrl(url, antiForgeryToken) {
+
+            return $http.post(url, {}, { heagers: { "__RequestVerificationToken": antiForgeryToken } });
+
+        }
+
     }
 })();

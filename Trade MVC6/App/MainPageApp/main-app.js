@@ -6,9 +6,9 @@
         'ngRoute',
 
         // Custom modules 
-        'main-app.service'
+        'main-app.service',
         // 3rd Party Modules
-
+        'ui.bootstrap'
     ]).constant("validExternalLink", ["/b2b", "/Account/LogOut", "/Account/Login"]) // , "/Account/Profile"
        .config(["$routeProvider", "$locationProvider", "validExternalLink",
          function ($routeProvider, $locationProvider, validExternalLink) {

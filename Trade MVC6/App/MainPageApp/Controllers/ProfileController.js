@@ -5,15 +5,16 @@
         .module('mainApp')
         .controller('ProfileController', ProfileController);
 
-    ProfileController.$inject = ['$location', 'dataService'];
+    ProfileController.$inject = ['$location', 'dataService', 'bootstrapDialog'];
 
-    function ProfileController($location, dataService) {
+    function ProfileController($location, dataService, bootstrapDialog) {
         /* jshint validthis:true */
 
         // variable
 
         var vm = this;
         vm.data = {}
+        vm.allowChangeCompany = false;
 
         // properties
 
@@ -54,5 +55,20 @@
             });
         }
 
+        vm.changeCompany = function() {
+            vm.allowChangeCompany = true;
+        }
+
+        vm.changeEmail = function() {
+            // Необходимо выслать изменение email
+            bootstrapDialog.showModalConfiramtion('Письмо с инструкциями по изменению электронного адреса выслано на email:' + 
+                                                 vm.data.Email);
+        }
+
+        vm.sendConfirmation = function () {
+            // необходимо выслать подтверждение email
+            bootstrapDialog.showModalConfiramtion('Письмо для подверждения электронного адреса отправлено на email:' +
+                                                vm.data.Email);
+        }
     }
 })();

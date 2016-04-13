@@ -12,6 +12,7 @@ using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.ViewModels.Account;
 using System.Linq;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Trade_MVC6.Attributes;
 using Trade_MVC6.Helpers;
 
@@ -123,7 +124,7 @@ namespace Trade_MVC6.Controllers
             {
             if (!ModelState.IsValid) return PartialView();
 
-            var user = new ApplicationUser { Access1C = false };
+            var user = new ApplicationUser();
             _mapper.Map(model, user);
             _dbContext.Add(user.Contact, User);
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -242,6 +243,8 @@ namespace Trade_MVC6.Controllers
             var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
             var currentProfileViewModel = new ProfileViewModel();
             _mapper.Map(currentUser, currentProfileViewModel);
+            currentProfileViewModel.Access1C = User.IsInRole(Roles.User1C);
+
             ViewData["returnUrl"] = returnUrl;
             return PartialView(currentProfileViewModel);
             }
@@ -250,7 +253,11 @@ namespace Trade_MVC6.Controllers
         [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/Profile")]
         public async Task<IActionResult> SaveProfile([FromBody] ProfileViewModel model)
         {
-            // var a = Request;
+            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (model.CompanyName != currentUser.CompanyName && User.IsInRole(Roles.User1C))
+            {
+                await _userManager.RemoveFromRoleAsync(currentUser, Roles.User1C);
+            }
             return Ok();
         }
 
