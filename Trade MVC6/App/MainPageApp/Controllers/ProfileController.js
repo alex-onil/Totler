@@ -3,12 +3,16 @@
 
     angular
         .module('mainApp')
-        .controller('ProfileController', ProfileController);
+        .controller('ProfileController', profileController);
 
-    ProfileController.$inject = ['$location', 'dataService', 'bootstrapDialog'];
+    profileController.$inject = ['$location', 'AppConfig', 'dataFactory', 'bootstrapFactory', '$templateCache'];
 
-    function ProfileController($location, dataService, bootstrapDialog) {
+    function profileController($location, appConfig, dataFactory, bootstrapFactory, $templateCache) {
         /* jshint validthis:true */
+
+        $templateCache.remove('/Account/Profile');
+        // or
+        //$templateCache.removeAll();
 
         // variable
 
@@ -48,7 +52,7 @@
 
         vm.save = function () {
             
-            dataService.sendForm($location.path(), vm.data, vm.antiforgery).then(function () {
+            dataFactory.sendForm($location.path(), vm.data, vm.antiforgery).then(function () {
                 console.log("Form sended");
             }, function() {
                 console.log("Form send Error");
@@ -61,14 +65,26 @@
 
         vm.changeEmail = function() {
             // Необходимо выслать изменение email
-            bootstrapDialog.showModalConfiramtion('Письмо с инструкциями по изменению электронного адреса выслано на email:' + 
-                                                 vm.data.Email);
+            var result = bootstrapFactory.showEmailChangeRequest();
+            //result.then(function () {
+            //    bootstrapFactory.showModalConfiramtion('Письмо с инструкциями по изменению электронного адреса выслано на email:' +
+            //        vm.data.Email);
+            //}, function () {
+            //    bootstrapFactory.showModalConfiramtion('В процессе отправки письма произошла ошибка.');
+            //});
+
         }
 
         vm.sendConfirmation = function () {
             // необходимо выслать подтверждение email
-            bootstrapDialog.showModalConfiramtion('Письмо для подверждения электронного адреса отправлено на email:' +
-                                                vm.data.Email);
+            var result = dataFactory.sendRequest(appConfig.requestEmailConfirmationUrl, {}, vm.antiforgery);
+            result.then(function () {
+                bootstrapFactory.showModalConfiramtion('Письмо для подверждения электронного адреса отправлено на email:' +
+                                                    vm.data.Email);
+            }, function () {
+                bootstrapFactory.showModalConfiramtion('В процессе отправки письма произошла ошибка.');
+            });
+
         }
     }
 })();

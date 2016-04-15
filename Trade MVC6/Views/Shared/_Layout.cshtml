@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Trade_MVC6.Helpers
+<!DOCTYPE html>
 <html lang="ru" ng-app="mainApp">
 <head>
     <base href="/">
@@ -13,11 +14,12 @@
     <link href="~/css/login-window.css" rel="stylesheet" />
 
 </head>
-<body>
+<body ng-controller="GlobalController as GlobalCtrl" ng-init="GlobalCtrl.antiforgery = '@Html.Raw(Context.RequestVerificationToken())';
+                                                              GlobalCtrl.authorized = '@User.Identity.IsAuthenticated'">
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    @*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
 
     @RenderBody()
     @*@RenderSection("scripts", required: false)*@

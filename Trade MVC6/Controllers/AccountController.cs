@@ -113,14 +113,14 @@ namespace Trade_MVC6.Controllers
 
         // GET: /Account/Register
         [HttpGet]
-        public IActionResult Register()
-            {
-            return View(new RegisterViewModel());
-            }
+        //public IActionResult Register()
+        //    {
+        //    return View(new RegisterViewModel());
+        //    }
 
         // POST: /Account/Register[
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        [HttpPost, Route("/Account/Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
             {
             if (!ModelState.IsValid) return PartialView();
 
@@ -252,14 +252,70 @@ namespace Trade_MVC6.Controllers
         // POST: /Account/Profile
         [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/Profile")]
         public async Task<IActionResult> SaveProfile([FromBody] ProfileViewModel model)
-        {
+            {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
             if (model.CompanyName != currentUser.CompanyName && User.IsInRole(Roles.User1C))
-            {
+                {
                 await _userManager.RemoveFromRoleAsync(currentUser, Roles.User1C);
-            }
+                }
             return Ok();
-        }
+            }
+
+        // POST: /Account/ReSendEmailConfirmation
+        [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/ReSendEmailConfirmation")]
+        public async Task<IActionResult> EmailConfimation()
+            {
+            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (currentUser.EmailConfirmed) return HttpBadRequest();
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(currentUser);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = currentUser.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+            await _emailSender.SendEmailAsync(currentUser.Email, "Подтверждение email учётной записи",
+                    "Подтвердите Вашу учётную запись нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
+            return Ok();
+            }
+
+        // POST: /Account/EmailChangeRequest
+        [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/EmailChangeRequest")]
+        public async Task<IActionResult> ChangeEmail([FromBody]string newEmail)
+            {
+            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (!currentUser.EmailConfirmed) return HttpBadRequest();
+            var code = await _userManager.GenerateChangeEmailTokenAsync(currentUser, newEmail);
+            var callbackUrl = Url.Action("EmailChangeConfirmation", "Account", new { userId = currentUser.Id, code = code, newEmail = newEmail },
+                protocol: HttpContext.Request.Scheme);
+            await _emailSender.SendEmailAsync(currentUser.Email, "Подтверждение изменения email",
+                    "Подтвердите изменения Email Вашей учётной записи нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
+            return Ok();
+            }
+
+        // GET: /Account/EmailChangeConfirmation
+        [HttpGet, Route("Account/EmailChangeConfirmation")]
+        public async Task<IActionResult> EmailChangeConfirmation(string userId, string code, string newEmail)
+            {
+            var currentUser = await _userManager.FindByIdAsync(userId);
+
+            if (currentUser == null) return View("_ErrorEmailChange");
+
+            var result = await _userManager.ChangeEmailAsync(currentUser, newEmail, code);
+
+            if (result.Succeeded) return View("_SuccessEmailChange");
+
+            return View("_ErrorEmailChange");
+
+            }
+
+        //[HttpGet, Route("/Account/UserNames")]
+        //public Task<JsonResult> GetUserNames() =>
+        //    Task.Run(() => Json( _userManager.Users.Select(i => i.UserName).ToList()));
+
+        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckUser")]
+        public Task<JsonResult> CheckUserName(string userName) =>
+            Task.Run(() => Json(_userManager.Users.FirstOrDefault(u => u.UserName.Equals(userName)) == null));
+
+        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckEmailDuplicate")]
+        public Task<JsonResult> CheckEmailDuplicate(string email) =>
+            Task.Run(() => Json(_userManager.Users.FirstOrDefault(u => u.NormalizedEmail.Equals(email.ToUpper())) == null));
 
         }
     }

@@ -1,11 +1,10 @@
 ﻿@using Trade_MVC6.ViewModels.Account
 @model RegisterViewModel
 <article class="row">
-    <div class="col-md-offset-1 col-md-10 panel panel-default">
+    <div class="col-md-offset-1 col-md-10 panel panel-default" ng-controller="RegisterController as Ctrl">
         <h1 class="panel-heading">Страница регистрации пользователей</h1>
-        @using (Html.BeginForm(FormMethod.Post, new { @class = "form-horizontal panel-body", role = "form" }))
-            {
-            @Html.AntiForgeryToken()
+
+        <form name="RegisterForm" class="form-horizontal panel-body" role="form" asp-antiforgery="true" novalidate>
             @Html.ValidationSummary(true)
             <div class="form-group">
                 @Html.LabelFor(m => m.CompanyName, new { @class = "col-lg-2" })
@@ -18,8 +17,17 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Nickname, new { @class = "col-lg-2" })
                 <div class="col-lg-10">
-                    @Html.ValidationMessageFor(m => m.Nickname)
-                    @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", placeholder = "xxx@xxx.xxx" })
+                    @*@Html.ValidationMessageFor(m => m.Nickname)*@
+                    @*@Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", placeholder = "xxx@xxx.xxx" })*@
+                    <input name="Nickname" type="text" placeholder="Login" class="form-control" pattern=".{3,}" asp-for="Nickname" 
+                           ng-model="Ctrl.data.Nickname" users required/>
+                    <div ng-show="RegisterForm.Nickname.$dirty">
+                        <span ng-show="RegisterForm.Nickname.$pending.users && RegisterForm.Nickname.$valid">Проверка имени пользователя ...</span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.users">Имя пользователя занято.<br></span>
+                        <span class="text-success" ng-show="!RegisterForm.Nickname.$error.users && RegisterForm.Nickname.$valid">Имя пользователя свободно.<br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.required">Имя пользователя обязательно.<br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.pattern">Имя пользователя должно иметь минимум 3 символа.<br></span>
+                    </div>
                 </div>
             </div>
 
@@ -73,7 +81,7 @@
                 @Html.LabelFor(m => m.Password, new { @class = "col-lg-2" })
                 <div class="col-lg-10">
                     @Html.ValidationMessageFor(m => m.Password)
-                    @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder = "Пароль"})
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
                 </div>
             </div>
 
@@ -86,7 +94,7 @@
             </div>
             <input id="confirm" type="button" class="btn btn-success" value="Готово" />
             @Html.ActionLink("Отмена", "Index", "Home", null, new { @class = "btn btn-danger" })
-            }
+        </form>
     </div>
 </article>
 <script>
@@ -95,7 +103,7 @@
         var handler = function (evt) {
             // console.log("Clicked funct");
             if (!$("form").valid()) {
-                $(evt.currentTarget).one("click",handler);
+                $(evt.currentTarget).one("click", handler);
                 return false;
             }
 
@@ -114,10 +122,10 @@
                 $("article").html(data);
             }, function (jqXHR, textStatus, errorThrown) {
 
-@{#if DEBUG }
-            console.log("Ajax Error");
-            console.log(textStatus, errorThrown);
-@{ #endif }
+                @{#if DEBUG }
+                console.log("Ajax Error");
+                console.log(textStatus, errorThrown);
+                @{ #endif }
                 $(evt.currentTarget).one("click", handler);
             });
 

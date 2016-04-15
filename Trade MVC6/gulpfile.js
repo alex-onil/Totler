@@ -51,8 +51,8 @@ gulp.task("min:angularJs", function() {
         .pipe(inject(gulp.src(paths.angularApp).pipe(angularFilesort())))
         .pipe(concat(paths.angularJsDest))
         .pipe(ngAnnotate())
-        .pipe(ngmin()) // { dynamic: true }
-        .pipe(uglify({ mangle: false }))
+        //.pipe(ngmin()) // { dynamic: true }
+        //.pipe(uglify({ mangle: false }))
         .pipe(gulp.dest("."));
 
 });

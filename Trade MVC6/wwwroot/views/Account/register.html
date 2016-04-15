@@ -1,0 +1,137 @@
+﻿<article class="row">
+    <div class="col-md-offset-1 col-md-10 panel panel-default">
+        <h1 class="panel-heading text-info">Страница регистрации пользователей</h1>
+
+        <form name="RegisterForm" class="form-horizontal panel-body" role="form" novalidate ng-submit="Ctrl.submit(GlobalCtrl.antiforgery)">
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.CompanyName.$valid,
+                                               'has-error' :  RegisterForm.CompanyName.$invalid && RegisterForm.CompanyName.$dirty,
+                                               'has-error' : RegisterForm.CompanyName.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Название компании</label>
+                <div class="col-lg-10">
+                    <input name="CompanyName" type="text" class="form-control" placeholder="Название компании" required ng-model="Ctrl.data.CompanyName"/>
+                    <div ng-show="RegisterForm.CompanyName.$dirty || Ctrl.submited">
+                        <span class="text-danger" ng-show="RegisterForm.CompanyName.$error.required">Название компании обязательно.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.Nickname.$valid,
+                                               'has-error' :  RegisterForm.Nickname.$invalid && RegisterForm.Nickname.$dirty,
+                                               'has-error' : RegisterForm.Nickname.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Псевдоним пользователя</label>
+                <div class="col-lg-10">
+                    <input name="Nickname" type="text" placeholder="Login" class="form-control" pattern=".{3,}" 
+                           ng-model="Ctrl.data.Nickname" users required antiforgery="GlobalCtrl.antiforgery"/>
+                    <div ng-show="RegisterForm.Nickname.$dirty || Ctrl.submited">
+                        <span ng-show="RegisterForm.Nickname.$pending.users && RegisterForm.Nickname.$valid">Проверка имени пользователя ...</span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.users">Имя пользователя занято.<br></span>
+                        <span class="text-success" ng-show="!RegisterForm.Nickname.$error.users && RegisterForm.Nickname.$valid">Имя пользователя свободно.<br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.required">Имя пользователя обязательно.<br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Nickname.$error.pattern">Имя пользователя должно иметь минимум 3 символа.<br></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.Email.$valid,
+                                               'has-error' :  RegisterForm.Email.$invalid && RegisterForm.Email.$dirty,
+                                               'has-error' : RegisterForm.Email.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Email</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Email" class="form-control" placeholder="email" ng-model="Ctrl.data.Email" required antiforgery="GlobalCtrl.antiforgery" email-duplicate-check
+                           ng-pattern="/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i"/>
+                    <div ng-show="RegisterForm.Email.$dirty || Ctrl.submited">
+                        <span ng-show="RegisterForm.Email.$pending.users && RegisterForm.Email.$valid">Проверка Email пользователя ...</span>
+                        <span class="text-danger" ng-show="RegisterForm.Email.$error.pattern">Введите валидный email адрес.<br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Email.$error.required">Email адрес является обязательным. <br></span>
+                        <span class="text-danger" ng-show="RegisterForm.Email.$error.emailDuplicateCheck">Email занят.<br></span>
+                        <span class="text-success" ng-show="!RegisterForm.Email.$error.emailDuplicateCheck && RegisterForm.Email.$valid">Email доступен.<br></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2">Имя</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Name" class="form-control" placeholder="Имя"
+                           ng-model="Ctrl.data.Name"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2">Фамилия</label>
+                <div class="col-lg-10">
+                    <input type="text" name="Surname" class="form-control" placeholder="Фамилия"
+                           ng-model="Ctrl.data.Surname"/>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.ContactPhone.$valid,
+                                               'has-error' :  RegisterForm.ContactPhone.$invalid && RegisterForm.ContactPhone.$dirty,
+                                               'has-error' : RegisterForm.ContactPhone.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Контактный телефон</label>
+                <div class="col-lg-10">
+                    <input type="tel" name="ContactPhone" class="form-control" placeholder="Контактный телефон" required
+                           ng-model="Ctrl.data.ContactPhone" pattern="^\+(?:[0-9]●?){6,14}[0-9]$"/>
+                    <div ng-show="RegisterForm.ContactPhone.$dirty || Ctrl.submited">
+                        <span class="text-danger" ng-show="RegisterForm.ContactPhone.$error.pattern">Введите валидный телефонный номер.</span>
+                        <span class="text-danger" ng-show="RegisterForm.ContactPhone.$error.required">Телефонный номер является обязательным.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2">Skype</label>
+                <div class="col-lg-10">
+                    <input type="text" name="SkypeId" class="form-control" placeholder="Skype ID"
+                           ng-model="Ctrl.data.SkypeId"/>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.IcqId.$valid && RegisterForm.IcqId.$dirty,
+                                               'has-error' :  RegisterForm.IcqId.$invalid && RegisterForm.IcqId.$dirty,
+                                               'has-error' : RegisterForm.IcqId.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Icq</label>
+                <div class="col-lg-10">
+                    <input type="text" name="IcqId" class="form-control" placeholder="Icq UIN"
+                           ng-model="Ctrl.data.IcqId" pattern="^[0-9]{1,10}"/>
+                    <div ng-show="RegisterForm.IcqId.$dirty || Ctrl.submited">
+                        <span class="text-danger" ng-show="RegisterForm.IcqId.$error.pattern">Введите валидный Icq UIN.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.Password.$valid,
+                                               'has-error' :  RegisterForm.Password.$invalid && RegisterForm.Password.$dirty,
+                                               'has-error' : RegisterForm.Password.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Введите пароль</label>
+                <div class="col-lg-10">
+                    <input type="password" name="Password" class="form-control" placeholder="Пароль" required
+                           ng-model="Ctrl.data.Password" pattern=".{6,}"/>
+                    <div ng-show="RegisterForm.Password.$dirty || Ctrl.submited">
+                        <span class="text-danger" ng-show="RegisterForm.Password.$error.pattern">Минимальная длинна пароля 6 символов.</span>
+                        <span class="text-danger" ng-show="RegisterForm.Password.$error.required">Пароль обязателен.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success' : RegisterForm.ConfirmPassword.$valid,
+                                               'has-error' :  RegisterForm.ConfirmPassword.$invalid && RegisterForm.ConfirmPassword.$dirty,
+                                               'has-error' : RegisterForm.ConfirmPassword.$invalid && Ctrl.submited}">
+                <label class="col-lg-2">Повторите пароль</label>
+                <div class="col-lg-10">
+                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="Повторите пароль" required
+                           ng-model="RegisterForm.data.ConfirmPassword" compare-to="Ctrl.data.Password"/>
+                    <div ng-show="RegisterForm.Password.$dirty || Ctrl.submited">
+                        <span class="text-danger" ng-show="RegisterForm.ConfirmPassword.$error.required">Подтверждение пароля обязательно.</span>
+                        <span class="text-danger" ng-show="RegisterForm.ConfirmPassword.$error.compareTo">Пароли не совпадают.</span>
+                    </div>
+                </div>
+            </div>
+
+            <input id="confirm" type="submit" class="btn btn-success" value="Готово"
+                   ng-click="Ctrl.submited = true"/>
+            <button type="button" class="btn btn-danger" ng-click="Ctrl.cancel()">Отмена</button>
+        </form>
+    </div>
+</article>

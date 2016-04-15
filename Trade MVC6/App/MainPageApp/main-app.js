@@ -9,7 +9,7 @@
         'main-app.service',
         // 3rd Party Modules
         'ui.bootstrap'
-    ]).constant("validExternalLink", ["/b2b", "/Account/LogOut", "/Account/Login"]) // , "/Account/Profile"
+    ]).constant("validExternalLink", ["/b2b", "/Account/LogOut", "/Account/Login", "/Account/ForgotPassword"]) // "/Account/Register",
        .config(["$routeProvider", "$locationProvider", "validExternalLink",
          function ($routeProvider, $locationProvider, validExternalLink) {
              $locationProvider.html5Mode({
@@ -72,14 +72,22 @@
                  templateUrl: "/views/MainPageApp/Vacancies.html"
              });
 
-             // Account "/Account/Profile" 
+             // Account
+
+             $routeProvider.when("/Account/Register", {
+                 templateUrl: "/views/Account/register.html",
+                 controller: "RegisterController",
+                 controllerAs: "Ctrl"
+             });
 
              $routeProvider.when("/Account/Profile", {
                  templateUrl: function (location) {
                      console.log(location);
                      var search = "";
                      for (var index in location) {
-                         search += index + "=" + location[index];
+                         if (location.hasOwnProperty(index)) {
+                             search += index + "=" + location[index];
+                         }
                      }
                      if (search === "") {
                          return "/Account/Profile";
@@ -103,7 +111,9 @@
                      if (validExternalLink.indexOf(path) > -1) {
                          var srch = '';
                          for (var index in search) {
-                             srch += index + "=" + search[index];
+                             if (search.hasOwnProperty(index)) {
+                                 srch += index + "=" + search[index];
+                             }
                          }
 
                          if (srch === '') window.location.replace(path);
@@ -118,11 +128,30 @@
          }])
        .run(['$rootScope', '$location', function($rootScope, $location) {
            // register listener to watch route changes
-           $rootScope.$on("$routeChangeStart", function (event, next, current) {
-                //  Just for test )
-                //console.log(next);
-                //console.log(current);
-            });
-        }]);
+           //$rootScope.$on("$routeChangeStart", function (event, next, current) {
+           //});
 
+           // Store ReturnUrl
+           $rootScope.$on("$routeChangeSuccess", function (event, current, previous) {
+               if (angular.isDefined(previous)) {
+                   $rootScope.previousPage = previous.$$route.originalPath;
+               } else {
+                   $rootScope.previousPage = '/';
+               }
+           });
+        }])
+       .constant('AppConfig', appConfig());
+
+       // -------------------------------------------
+
+       function appConfig() {
+           return {
+               requestChangeEmailUrl: "/Account/EmailChangeRequest",
+               requestEmailConfirmationUrl: "/Account/ReSendEmailConfirmation",
+               //requestUsers: "/Account/UserNames",
+               requestCheckUser: "/Account/CheckUser",
+               requestChekEmail: "/Account/CheckEmailDuplicate",
+               sendRegister: "/Account/Register"
+           }
+       }
 })();

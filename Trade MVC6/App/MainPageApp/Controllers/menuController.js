@@ -10,6 +10,10 @@
     function menuController($scope, $location) {
         var vm = this;
 
+        vm.register = function () {
+            $location.path('/Account/Register');
+        }
+
         vm.login = function () {
             moveToUrlWithReturn('/Account/Login');
         }

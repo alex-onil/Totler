@@ -30,15 +30,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-4">
+                    <div class="col-lg-offset-2 col-lg-10">
                         <button type="submit" class="btn btn-lg btn-success">Вход</button>
+                        <a asp-action="ForgotPassword" asp-controller="Account" class="btn btn-warning btn-lg">Восстановить</a>
                     </div>
-                    <div class="col-lg-offset-1 col-lg-4 ">
+                    @*<div class="col-lg-offset-1 col-lg-4 ">
                         <div class="btn-group-vertical">
-                            <a asp-action="Register" asp-controller="Account" class="btn btn-primary btn-xs">Регистрация</a>
-                            <a asp-action="ForgotPassword" asp-controller="Account" class="btn btn-warning btn-xs">Восстановить</a>
-                        </div>
-                    </div>
+                            <a asp-action="Register" asp-controller="Account" class="btn btn-primary btn-xs">Регистрация</a>*@
+                            
+                        @*</div>
+                    </div>*@
                 </div>
             </form>
         </div>
