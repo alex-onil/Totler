@@ -67,10 +67,10 @@
             // Необходимо выслать изменение email
             var result = bootstrapFactory.showEmailChangeRequest();
             //result.then(function () {
-            //    bootstrapFactory.showModalConfiramtion('Письмо с инструкциями по изменению электронного адреса выслано на email:' +
+            //    bootstrapFactory.showModalConfirmation('Письмо с инструкциями по изменению электронного адреса выслано на email:' +
             //        vm.data.Email);
             //}, function () {
-            //    bootstrapFactory.showModalConfiramtion('В процессе отправки письма произошла ошибка.');
+            //    bootstrapFactory.showModalConfirmation('В процессе отправки письма произошла ошибка.');
             //});
 
         }
@@ -79,10 +79,10 @@
             // необходимо выслать подтверждение email
             var result = dataFactory.sendRequest(appConfig.requestEmailConfirmationUrl, {}, vm.antiforgery);
             result.then(function () {
-                bootstrapFactory.showModalConfiramtion('Письмо для подверждения электронного адреса отправлено на email:' +
+                bootstrapFactory.showModalConfirmation('Письмо для подверждения электронного адреса отправлено на email:' +
                                                     vm.data.Email);
             }, function () {
-                bootstrapFactory.showModalConfiramtion('В процессе отправки письма произошла ошибка.');
+                bootstrapFactory.showModalConfirmation('В процессе отправки письма произошла ошибка.');
             });
 
         }

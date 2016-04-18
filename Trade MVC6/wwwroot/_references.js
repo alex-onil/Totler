@@ -1,14 +1,14 @@
 ﻿/// <autosync enabled="true" />
-/// <reference path="../app/mainpageapp/controllers/dialogs/dialogcontroller - копировать.js" />
 /// <reference path="../app/mainpageapp/controllers/dialogs/dialogcontroller.js" />
+/// <reference path="../App/MainPageApp/Controllers/Dialogs/EmailChangeController.js" />
+/// <reference path="../app/mainpageapp/controllers/dialogs/errordialogcontroller.js" />
 /// <reference path="../App/MainPageApp/Controllers/ErrorController.js" />
-/// <reference path="../app/mainpageapp/controllers/globalcontroller.js" />
 /// <reference path="../app/mainpageapp/controllers/home-ctrl.js" />
 /// <reference path="../app/mainpageapp/controllers/menucontroller.js" />
 /// <reference path="../app/mainpageapp/controllers/profilecontroller.js" />
 /// <reference path="../app/mainpageapp/controllers/registercontroller.js" />
 /// <reference path="../app/mainpageapp/directives/compare-to-directive.js" />
-/// <reference path="../app/mainpageapp/directives/users-directive - копировать.js" />
+/// <reference path="../App/MainPageApp/Directives/email-dupcheck-directive.js" />
 /// <reference path="../app/mainpageapp/directives/users-directive.js" />
 /// <reference path="../app/mainpageapp/main-app.js" />
 /// <reference path="../App/MainPageApp/Services/bootstrap-dialog-factory.js" />

@@ -62,11 +62,11 @@ namespace Trade_MVC6
 
             // Antiforgery RC1 have Bug
 
-            //services.ConfigureAntiforgery(options =>
-            //{
-            //    options.CookieName = Configuration["AntiForgery:CookieName"];
-            //    options.RequireSsl = false;
-            //});
+            services.ConfigureAntiforgery(options =>
+            {
+                options.CookieName = Configuration["AntiForgery:CookieName"];
+                options.RequireSsl = false;
+            });
 
 
             // Add framework services.
@@ -135,7 +135,8 @@ namespace Trade_MVC6
                     routes.MapRoute(
                      name: "default",
                      template: "{controller=Home}/{action=Index}/{id?}");
-                 });
+
+                });
 
             // Set Default Katana Module
             // app.Properties["builder.DefaultApp"] = defaultModule;

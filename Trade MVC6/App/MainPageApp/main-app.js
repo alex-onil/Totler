@@ -74,13 +74,13 @@
 
              // Account
 
-             $routeProvider.when("/Account/Register", {
+             $routeProvider.when("/Home/RegisterAccount", {
                  templateUrl: "/views/Account/register.html",
                  controller: "RegisterController",
                  controllerAs: "Ctrl"
              });
 
-             $routeProvider.when("/Account/Profile", {
+             $routeProvider.when("/Home/AccountProfile", {
                  templateUrl: function (location) {
                      console.log(location);
                      var search = "";

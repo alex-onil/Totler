@@ -18,6 +18,7 @@ namespace Trade_MVC6.Helpers
             var antiforgeryTokenSet = antiforgeryService.GetTokens(context);
 
             // RC1 Antiforgery Bug("Not return Cookie Token")
+            
             var configuration = (IOptions<AntiforgeryOptions>) context.RequestServices.GetService(typeof(IOptions<AntiforgeryOptions>));
             var cookieName = configuration.Value.CookieName;
 

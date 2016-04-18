@@ -9,7 +9,8 @@
 
     function bootstrapDialog($uibModal) {
         var service = {
-            showModalConfiramtion: showModalcfrm,
+            showModalConfirmation: showModalcfrm,
+            showModalErrors:showModalErr,
             showEmailChangeRequest: showEmailChange
         };
 
@@ -50,6 +51,30 @@
             }
 
             var modalInstance = $uibModal.open(opts);
+
+            return modalInstance.closed;
+        }
+
+        function showModalErr(header, messages) {
+
+            var opts = {
+                backdrop: false,
+                keyboard: true,
+                backdropClick: true,
+                size: 'lg',
+                templateUrl: "/views/dialogs/ErrorMessages.html",
+                controller: 'ErrorDialogController',
+                controllerAs: 'Ctrl'
+            };
+
+            opts.resolve = {
+                messageData: {
+                    headerText: header,
+                    errorMessages: messages
+                }
+            }
+
+            return $uibModal.open(opts).closed;
         }
 
         function showEmailChange() {
@@ -68,6 +93,7 @@
 
             return $uibModal.open(opt);
         }
+
     }
 
 })();

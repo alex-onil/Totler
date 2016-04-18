@@ -42,6 +42,7 @@ namespace Trade_MVC6.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
 
             }
+        #region Log In/Out
 
         // GET: /Account/Login
         [HttpGet]
@@ -98,39 +99,40 @@ namespace Trade_MVC6.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
             }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost, ValidateAntiForgeryToken, Authorize]
-        public async Task<IActionResult> LogOff()
-            {
-            if (User.Identity.IsAuthenticated)
-                await _signInManager.SignOutAsync();
+        ////
+        //// POST: /Account/LogOff
+        //[HttpPost, ValidateAntiForgeryToken, Authorize]
+        //public async Task<IActionResult> LogOff()
+        //    {
+        //    if (User.Identity.IsAuthenticated)
+        //        await _signInManager.SignOutAsync();
 
-            _logger.LogInformation(4, "User logged out.");
-            //return new HttpStatusCodeResult(200);
-            return RedirectToAction("Index", "Home");
-            }
+        //    _logger.LogInformation(4, "User logged out.");
+        //    //return new HttpStatusCodeResult(200);
+        //    return RedirectToAction("Index", "Home");
+        //    }
 
         // GET: /Account/Register
-        [HttpGet]
+        //[HttpGet]
         //public IActionResult Register()
         //    {
         //    return View(new RegisterViewModel());
         //    }
 
         // POST: /Account/Register[
-        [HttpPost, Route("/Account/Register")]
+
+        #endregion
+
+        [HttpPost, ValidateHeaderAntiForgeryToken, Route("/Account/Register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
             {
-            if (!ModelState.IsValid) return PartialView();
-
+            if (!model.IsValid) return HttpBadRequest(model.ValidationMessages().Select(n => n.ErrorMessage));
             var user = new ApplicationUser();
             _mapper.Map(model, user);
             _dbContext.Add(user.Contact, User);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
                 {
-
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -139,9 +141,10 @@ namespace Trade_MVC6.Controllers
                 await _emailSender.SendEmailAsync(model.Email, "Подтверждение email учётной записи",
                     "Подтвердите Вашу учётную запись нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
                 //await _signInManager.SignInAsync(user, isPersistent: false);
+                    return Ok();
                 }
 
-            return PartialView("_SuccessRegistration", model.Email);
+            return HttpBadRequest(new [] {"Ошибка базы данных при создании учетной записи."});
             }
 
         // GET: /Account/ConfirmEmail
@@ -277,14 +280,15 @@ namespace Trade_MVC6.Controllers
 
         // POST: /Account/EmailChangeRequest
         [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/EmailChangeRequest")]
-        public async Task<IActionResult> ChangeEmail([FromBody]string newEmail)
-            {
+        public async Task<IActionResult> ChangeEmail(string newEmail)
+        {
+            var a = HttpContext;
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
             if (!currentUser.EmailConfirmed) return HttpBadRequest();
             var code = await _userManager.GenerateChangeEmailTokenAsync(currentUser, newEmail);
             var callbackUrl = Url.Action("EmailChangeConfirmation", "Account", new { userId = currentUser.Id, code = code, newEmail = newEmail },
                 protocol: HttpContext.Request.Scheme);
-            await _emailSender.SendEmailAsync(currentUser.Email, "Подтверждение изменения email",
+            await _emailSender.SendEmailAsync(currentUser.Email, "Подтверждение изменения Email",
                     "Подтвердите изменения Email Вашей учётной записи нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
             return Ok();
             }
@@ -299,7 +303,13 @@ namespace Trade_MVC6.Controllers
 
             var result = await _userManager.ChangeEmailAsync(currentUser, newEmail, code);
 
-            if (result.Succeeded) return View("_SuccessEmailChange");
+            await _userManager.UpdateAsync(currentUser);
+
+            if (result.Succeeded)
+            {
+                // await _userManager.SetEmailAsync(currentUser, Email);
+                return View("_SuccessEmailChange");
+            }
 
             return View("_ErrorEmailChange");
 

@@ -13,9 +13,7 @@
             require: 'ngModel',
             link: link,
             restrict: 'A',
-            scope: {
-                antiforgery: "=antiforgery"
-            }
+            scope: {}
         };
         return directive;
 
@@ -30,7 +28,7 @@
 
                 var def = $q.defer();
 
-                dataFactory.checkUser(modelValue, scope.antiforgery).then(function (reciveBuf) {
+                dataFactory.checkUser(modelValue).then(function (reciveBuf) {
                     if (reciveBuf.data) {
                         // The username is available
                         def.resolve();

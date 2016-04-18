@@ -25,6 +25,7 @@
 
         function link(scope, element, attrs, ngModel) {
             ngModel.$validators.compareTo = function (modelValue) {
+                console.log(scope);
                 return modelValue === scope.otherModelValue;
             };
 

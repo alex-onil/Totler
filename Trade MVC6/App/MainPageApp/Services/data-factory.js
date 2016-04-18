@@ -5,16 +5,17 @@
         .module('mainApp')
         .factory('dataFactory', dataService);
 
-    dataService.$inject = ['$http', 'AppConfig'];
+    dataService.$inject = ['$http', 'AppConfig', '$rootScope'];
 
-    function dataService($http, appConfig) {
+    function dataService($http, appConfig, $rootScope) {
         var service = {
             sendForm: sendFormData,
             sendRequest: sendRequestByUrl,
             //getUsers: sendUsersRequest,
             checkUser: sendCheckUserRequest,
             emailDuplicateCheck: sendCheckEmailDuplicate,
-            sendUserRegistration: sendUserRegistration
+            sendUserRegistration: sendUserRegistration,
+            sendEmailChangeRequest: sendEmailChangeRequest
 
         };
 
@@ -22,7 +23,7 @@
 
         // Declaration
 
-        function sendFormData(url, data, antiForgeryToken) {
+        function sendFormData(url, data) {
 
             if (url === "" || angular.isUndefined(url)) return $q.reject("No Url in Request");
 
@@ -30,14 +31,15 @@
                 method: 'POST',
                 url: url,
                 headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
+                    'Content-Type': 'application/json; charset=utf-8',
+                    "__RequestVerificationToken": $rootScope.antiforgery
                 }
             }
 
             req.data = angular.toJson(data);
 
-            if (angular.isDefined(antiForgeryToken)) {
-                req.headers["__RequestVerificationToken"] = antiForgeryToken;
+            if (angular.isDefined($rootScope.antiforgery)) {
+                req.headers["__RequestVerificationToken"] = $rootScope.antiforgery;
             }
 
             console.log(req);
@@ -45,9 +47,9 @@
             return $http(req);
         }
 
-        function sendRequestByUrl(url, data, antiForgeryToken) {
+        function sendRequestByUrl(url, data) {
             return $http.post(url, data, {
-                 headers: { "__RequestVerificationToken": antiForgeryToken }
+                headers: { "__RequestVerificationToken": $rootScope.antiforgery }
             });
 
         }
@@ -58,23 +60,37 @@
         //    });
         //}
 
-        function sendCheckUserRequest(name, antiForgeryToken) {
-            return $http.get(appConfig.requestCheckUser + "?userName=" + name, {
-                headers: { "__RequestVerificationToken": antiForgeryToken }
+        function sendCheckUserRequest(name) {
+            return $http.get(appConfig.requestCheckUser, {
+                headers: { "__RequestVerificationToken": $rootScope.antiforgery },
+                params: {"userName" : name}
             });
         }
 
-        function sendCheckEmailDuplicate(email, antiForgeryToken) {
-            return $http.get(appConfig.requestChekEmail + "?email=" + email, {
-                headers: { "__RequestVerificationToken": antiForgeryToken }
+        function sendCheckEmailDuplicate(email) {
+            return $http.get(appConfig.requestChekEmail, {
+                headers: { "__RequestVerificationToken": $rootScope.antiforgery },
+                params: { "email" : email }
             });
         }
 
-        function sendUserRegistration(data, antiForgeryToken) {
-            console.log(data);
-            console.log(antiForgeryToken);
-            return $http.post(appConfig.sendRegister, {
-                headers: { "__RequestVerificationToken": antiForgeryToken }, data: data });
+        function sendUserRegistration(data) {
+            var config = {
+                headers: { "__RequestVerificationToken": $rootScope.antiforgery }
+                //,xsrfHeaderName: "X-XSRF-TOKEN"
+            }
+            return $http.post(appConfig.sendRegister, data, config );
+        }
+
+        function sendEmailChangeRequest(newEmail) {
+
+            console.log(newEmail);
+            
+            var config = {
+                headers: { "__RequestVerificationToken": $rootScope.antiforgery },
+                params: { "newEmail": newEmail }
+            }
+            return $http.post(appConfig.requestChangeEmailUrl, newEmail, config);
         }
     }
 })();

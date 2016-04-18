@@ -14,8 +14,8 @@
     <link href="~/css/login-window.css" rel="stylesheet" />
 
 </head>
-<body ng-controller="GlobalController as GlobalCtrl" ng-init="GlobalCtrl.antiforgery = '@Html.Raw(Context.RequestVerificationToken())';
-                                                              GlobalCtrl.authorized = '@User.Identity.IsAuthenticated'">
+<body ng-init="antiforgery = '@Html.Raw(Context.RequestVerificationToken())';
+               authorized = '@User.Identity.IsAuthenticated'">
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>

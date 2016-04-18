@@ -11,7 +11,11 @@
         var vm = this;
 
         vm.register = function () {
-            $location.path('/Account/Register');
+            $location.path('/Home/RegisterAccount');
+        }
+
+        vm.profile = function () {
+            $location.path('/Home/AccountProfile');
         }
 
         vm.login = function () {
@@ -23,7 +27,7 @@
         }
 
         vm.profile = function () {
-            moveToUrlWithReturn('/Account/Profile');
+            $location.path('/Home/AccountProfile');
         }
 
         vm.b2b = function () {

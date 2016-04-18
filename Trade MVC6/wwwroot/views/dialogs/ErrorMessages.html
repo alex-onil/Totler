@@ -1,0 +1,7 @@
+﻿<div class="modal-body">
+    <h3>{{Ctrl.header}}</h3>
+    <div ng-repeat="error in Ctrl.ErrorMessages">
+        <p class="text-danger"> {{error}}</p>
+    </div>
+    <button class="btn btn-warning" type="button" ng-click="Ctrl.close()">Закрыть</button>
+</div>

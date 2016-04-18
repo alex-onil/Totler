@@ -13,9 +13,7 @@
             require: 'ngModel',
             link: link,
             restrict: 'A',
-            scope: {
-                antiforgery: "=antiforgery"
-            }
+            scope: {}
         };
         return directive;
 
@@ -30,7 +28,7 @@
 
                 var def = $q.defer();
 
-                dataFactory.emailDuplicateCheck(modelValue, scope.antiforgery).then(function (reciveBuf) {
+                dataFactory.emailDuplicateCheck(modelValue).then(function (reciveBuf) {
                     if (reciveBuf.data) {
                         // The username is available
                         def.resolve();
