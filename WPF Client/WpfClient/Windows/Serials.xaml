@@ -1,0 +1,35 @@
+﻿<Window x:Class="WpfClient.Windows.Serials"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:command="clr-namespace:WpfClient.Commands"
+        xmlns:implementation="clr-namespace:WpfClient.Commands.Implementation"
+        Title="Выбор серийных номеров" Height="413.428" Width="713.428" WindowStartupLocation="CenterScreen">
+    <Grid Name="GR_Main" Margin="0,0,2,0">
+        <Grid.Resources>
+            <ContextMenu x:Key="LB_Menu">
+                    <!--<MenuItem Header="Удалить" IsEnabled="False" Name="Delete" Visibility="Visible"  Click="MI_Delete_Click" ContextMenuOpening="Delete_ContextMenuOpening" />-->
+                    <MenuItem Command="command:ClientCommands.DeleteElement" />
+            </ContextMenu>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="91"/>
+
+        </Grid.ColumnDefinitions>
+        <Button Content="Готово" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,45" VerticalAlignment="Bottom" Width="75" Height="30" Click="Button_OK_Click"/>
+        <Button Content="Отмена" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="30" Click="Button_Cancel_Click"/>
+        <TextBox Height="23" Margin="10,116,10,0" TextWrapping="Wrap" Text="{Binding ElementName=LB_Serials, Path=SelectedItem}" VerticalAlignment="Top" KeyDown="TextBox_KeyDown" VerticalContentAlignment="Center"/>
+        <ListBox Name="LB_Serials"  Margin="10,144,10,10" ItemsSource="{Binding Path=Serials}" IsManipulationEnabled="True" SelectionMode="Extended" ContextMenu="{StaticResource LB_Menu}" SelectionChanged="LB_Serials_SelectionChanged">
+        </ListBox>
+        <GroupBox Header="Товар" Margin="10,10,10,0" VerticalAlignment="Top" Height="101">
+            <Grid HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="580">
+                <TextBox Height="23" Margin="10,10,10,0" TextWrapping="Wrap" Text="{Binding Path=Model,Mode=TwoWay}" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
+                <TextBox Height="23" Margin="137,44,16,0" TextWrapping="Wrap" Text="{Binding Path=WarantyInMonth, Mode=TwoWay}" VerticalAlignment="Top" PreviewTextInput="TextBox_PreviewTextInput" VerticalContentAlignment="Center"/>
+                <Label Content="Срок гарантии, мес." HorizontalAlignment="Left" Margin="14,45,0,0" VerticalAlignment="Top" Height="26" Width="118"/>
+            </Grid>
+        </GroupBox>
+        <Button Content="Удалить" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,208" VerticalAlignment="Bottom" Width="75" Height="30" 
+        Command="command:ClientCommands.DeleteElement" CommandTarget="{Binding ElementName=LB_Serials}"/>
+
+    </Grid>
+</Window>

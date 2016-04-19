@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DataTypes"
+namespace="DataTypes.Mappings">
+  <subclass name="ShippedProduct">
+    <property name="ProductName"  column="ProductName"/>
+    <property name ="SerialNumber" column="SerialNumber" />
+    <property name="ProductWarrantyStartDate" column="WarantyStartDate" />
+    <property name="ProductWarrantyInMonth" column="WarantyInMonth" />
+    <property name="Notes" column="Notes" length="1000" />
+    <many-to-one name="Model" class="Datatypes.StoreTypes.ModelGroup" column="modelID" cascade="all" />
+  </subclass >
+</hibernate-mapping>
