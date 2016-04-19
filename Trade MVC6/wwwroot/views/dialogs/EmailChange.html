@@ -16,28 +16,7 @@
                 Пароли не совпадают.
             </span>
         </div>
-        <button class="btn btn-success" type="button" ng-disabled="EmailChangeForm.$invalid" ng-click="Ctrl.ok()">Готово</button>
-        <button class="btn btn-warning" type="button" ng-click="Ctrl.close()">Отмена</button>
+        <button class="btn btn-success" type="button" ng-disabled="EmailChangeForm.$invalid || Ctrl.IsSending" ng-click="Ctrl.ok()">Готово</button>
+        <button class="btn btn-warning" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.close()">Отмена</button>
     </form>
 </div>
-
-<!--<div class="text-danger" ng-show="EmailChangeForm.Email.$dirty" ng-messages="EmailChangeForm.Email.$error">
-    <span ng-message="required">
-        Обязательное поле.
-    </span>
-    <span ng-message="email">
-        Введите валидный Email адрес.
-    </span>
-</div>-->
-
-<!--<div class="text-danger" ng-show="EmailChangeForm.Email.$dirty && EmailChangeForm.EmailConfirm.$dirty">
-    <span ng-message="required">
-        Обязательное поле.
-    </span>
-    <span ng-message="email">
-        Введите валидный Email адрес.
-    </span>
-    <span ng-message="compareTo">
-        Пароли не совпадают.
-    </span>
-</div>-->

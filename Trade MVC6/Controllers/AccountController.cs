@@ -141,10 +141,10 @@ namespace Trade_MVC6.Controllers
                 await _emailSender.SendEmailAsync(model.Email, "Подтверждение email учётной записи",
                     "Подтвердите Вашу учётную запись нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
                 //await _signInManager.SignInAsync(user, isPersistent: false);
-                    return Ok();
+                return Ok();
                 }
 
-            return HttpBadRequest(new [] {"Ошибка базы данных при создании учетной записи."});
+            return HttpBadRequest(new[] { "Ошибка базы данных при создании учетной записи." });
             }
 
         // GET: /Account/ConfirmEmail
@@ -180,29 +180,37 @@ namespace Trade_MVC6.Controllers
             {
             if (ModelState.IsValid)
                 {
-                var user = await _userManager.FindByNameAsync(model.Email);
+                var user = await _userManager.FindByNameAsync(model.Email) ??
+                            await _userManager.FindByNameAsync(model.Email);
 
                 if (user == null)
                     {
-                    ModelState.AddModelError("", "Учетная запись с указанным Email не обнаружена.");
+                    ModelState.AddModelError("", "Учетная запись не обнаружена.");
                     // Don't reveal that the user does not exist or is not confirmed
-                    return PartialView();
+                    return View();
                     }
                 if (!(await _userManager.IsEmailConfirmedAsync(user)))
                     {
-                    ModelState.AddModelError("", "Учетная запись с указанным Email не подтверждена.");
+                    ModelState.AddModelError("", "Email учетной записи не подтвержден. Учетная запись с указанным Email не подтверждена.");
                     // Don't reveal that the user does not exist or is not confirmed
-                    return PartialView();
+
+                    var emlCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var emlCallbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = emlCode },
+                        protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(user.Email, "Подтверждение email учётной записи",
+                            "Подтвердите Вашу учётную запись нажатием <a href=\"" + emlCallbackUrl + "\">ссылки</a>");
+
+                    return View("_ChangePassSendEmailCfrm");
                     }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, email = user.Email, code = code },
                 protocol: HttpContext.Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Восстановление пароля",
+                await _emailSender.SendEmailAsync(user.Email, "Восстановление пароля",
                    "Для сброса пароля нажмите на <a href=\"" + callbackUrl + "\">ссылку</a>");
-                return PartialView("_PasswordResetSend", model.Email);
+                return View("_PasswordResetSend");
                 }
             return PartialView(model);
             }
@@ -211,9 +219,10 @@ namespace Trade_MVC6.Controllers
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null, string email = null)
             {
-            return code == null ? View("_ErrorChangePassword") : View(new ResetPasswordViewModel { Code = code });
+            return (code == null || email == null) ?
+                    View("_ErrorChangePassword") : View(new ResetPasswordViewModel { Code = code, Email = email });
             }
 
         //
@@ -223,24 +232,24 @@ namespace Trade_MVC6.Controllers
             {
             if (!ModelState.IsValid)
                 {
-                return PartialView(model);
+                return View(model);
                 }
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
                 {
                 // Don't reveal that the user does not exist
-                return PartialView("_ErrorChangePassword");
+                return View("_ErrorChangePassword");
                 }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
                 {
-                return PartialView("_SuccessPasswordChange");
+                return View("_SuccessPasswordChange");
                 }
-            return PartialView("_ErrorChangePassword");
+            return View("_ErrorChangePassword");
             }
 
         // GET: /Account/Profile
-        [HttpGet, Authorize]
+        [HttpGet, Authorize, Route("Account/Profile")]
         public async Task<IActionResult> Profile(string returnUrl)
             {
             var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
@@ -248,7 +257,6 @@ namespace Trade_MVC6.Controllers
             _mapper.Map(currentUser, currentProfileViewModel);
             currentProfileViewModel.Access1C = User.IsInRole(Roles.User1C);
 
-            ViewData["returnUrl"] = returnUrl;
             return PartialView(currentProfileViewModel);
             }
 
@@ -256,12 +264,26 @@ namespace Trade_MVC6.Controllers
         [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/Profile")]
         public async Task<IActionResult> SaveProfile([FromBody] ProfileViewModel model)
             {
-            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (!model.IsValid)
+                {
+                return HttpBadRequest(model.ValidationMessages().Select(m => m.ErrorMessage));
+                }
+
+            var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
+
+            if (currentUser == null) return HttpBadRequest(new[] { "Пользователь не найден." });
+
             if (model.CompanyName != currentUser.CompanyName && User.IsInRole(Roles.User1C))
                 {
                 await _userManager.RemoveFromRoleAsync(currentUser, Roles.User1C);
                 }
-            return Ok();
+            _mapper.Map(model, currentUser);
+            var result = await _userManager.UpdateAsync(currentUser);
+
+            if (result.Succeeded) return Ok();
+
+            return HttpBadRequest(new[] { "В процессе обновления пользователя произошла ошибка." });
             }
 
         // POST: /Account/ReSendEmailConfirmation
@@ -281,15 +303,17 @@ namespace Trade_MVC6.Controllers
         // POST: /Account/EmailChangeRequest
         [HttpPost, Authorize, ValidateHeaderAntiForgeryToken, Route("Account/EmailChangeRequest")]
         public async Task<IActionResult> ChangeEmail(string newEmail)
-        {
-            var a = HttpContext;
+            {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (!currentUser.EmailConfirmed) return HttpBadRequest();
+
             var code = await _userManager.GenerateChangeEmailTokenAsync(currentUser, newEmail);
+
             var callbackUrl = Url.Action("EmailChangeConfirmation", "Account", new { userId = currentUser.Id, code = code, newEmail = newEmail },
                 protocol: HttpContext.Request.Scheme);
+
             await _emailSender.SendEmailAsync(currentUser.Email, "Подтверждение изменения Email",
                     "Подтвердите изменения Email Вашей учётной записи нажатием <a href=\"" + callbackUrl + "\">ссылки</a>");
+
             return Ok();
             }
 
@@ -303,21 +327,14 @@ namespace Trade_MVC6.Controllers
 
             var result = await _userManager.ChangeEmailAsync(currentUser, newEmail, code);
 
-            await _userManager.UpdateAsync(currentUser);
-
             if (result.Succeeded)
-            {
-                // await _userManager.SetEmailAsync(currentUser, Email);
+                {
                 return View("_SuccessEmailChange");
-            }
+                }
 
             return View("_ErrorEmailChange");
 
             }
-
-        //[HttpGet, Route("/Account/UserNames")]
-        //public Task<JsonResult> GetUserNames() =>
-        //    Task.Run(() => Json( _userManager.Users.Select(i => i.UserName).ToList()));
 
         [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckUser")]
         public Task<JsonResult> CheckUserName(string userName) =>

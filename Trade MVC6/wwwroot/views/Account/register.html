@@ -1,5 +1,4 @@
-﻿<article class="row">
-    <div class="col-md-offset-1 col-md-10 panel panel-default">
+﻿<article class="panel panel-default">
         <h1 class="panel-heading text-info">Страница регистрации пользователей</h1>
 
         <form name="RegisterForm" class="form-horizontal panel-body" role="form" novalidate ng-submit="Ctrl.submit(GlobalCtrl.antiforgery)">
@@ -131,7 +130,6 @@
 
             <input id="confirm" type="submit" class="btn btn-success" value="Готово"
                    ng-click="Ctrl.submited = true" ng-disabled="Ctrl.submiting"/>
-            <button type="button" class="btn btn-danger" ng-click="Ctrl.cancel()">Отмена</button>
+            <button type="button" class="btn btn-danger" ng-click="Ctrl.cancel()" ng-disabled="Ctrl.submiting">Отмена</button>
         </form>
-    </div>
 </article>

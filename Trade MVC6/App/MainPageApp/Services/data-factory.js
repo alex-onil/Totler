@@ -38,9 +38,9 @@
 
             req.data = angular.toJson(data);
 
-            if (angular.isDefined($rootScope.antiforgery)) {
-                req.headers["__RequestVerificationToken"] = $rootScope.antiforgery;
-            }
+            //if (angular.isDefined($rootScope.antiforgery)) {
+            //    req.headers["__RequestVerificationToken"] = $rootScope.antiforgery;
+            //}
 
             console.log(req);
 
@@ -83,8 +83,6 @@
         }
 
         function sendEmailChangeRequest(newEmail) {
-
-            console.log(newEmail);
             
             var config = {
                 headers: { "__RequestVerificationToken": $rootScope.antiforgery },

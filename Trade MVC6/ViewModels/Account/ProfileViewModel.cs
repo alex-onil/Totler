@@ -3,7 +3,7 @@ using Trade_MVC6.ViewModels.Shared;
 
 namespace Trade_MVC6.ViewModels.Account
 {
-    public class ProfileViewModel
+    public class ProfileViewModel : AbstractValidator
     {
         [Required]
         [StringLength(15, ErrorMessage = "Длинна должна быть в пределах от {2} до {1} символов.", MinimumLength = 3 )]

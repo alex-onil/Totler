@@ -9,8 +9,6 @@ namespace Trade_MVC6.ViewModels.Account
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
         public string Email { get; set; }
         }
 }

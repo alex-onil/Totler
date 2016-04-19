@@ -8,8 +8,6 @@ namespace Trade_MVC6.ViewModels.Account
 {
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.AspNet.Antiforgery;
+using Microsoft.Extensions.OptionsModel;
 
 
 namespace Trade_MVC6.Attributes
@@ -21,12 +22,24 @@ namespace Trade_MVC6.Attributes
 
             if (!string.IsNullOrWhiteSpace(requestVerification))
                 {
-                var tokens = requestVerification.Split(':');
-
-                if (tokens.Length == 2)
+                    if (requestVerification.IndexOf(':') > -1)
                     {
-                    cookieToken = tokens[0];
-                    formToken = tokens[1];
+                        var tokens = requestVerification.Split(':');
+
+                        if (tokens.Length == 2)
+                        {
+                            cookieToken = tokens[0];
+                            formToken = tokens[1];
+                        }
+                    }
+                    else
+                    {
+                        var antiforgeryOptions = (IOptions<AntiforgeryOptions>)
+                            httpContext.RequestServices.GetService(typeof (IOptions<AntiforgeryOptions>)) ;
+                        var cookieName = antiforgeryOptions.Value.CookieName;
+
+                        formToken = requestVerification;
+                        cookieToken = httpContext.Request.Cookies[cookieName];
                     }
                 }
             var afTokenSet = new AntiforgeryTokenSet(formToken, cookieToken);

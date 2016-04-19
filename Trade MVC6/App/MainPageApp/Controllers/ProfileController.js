@@ -5,12 +5,12 @@
         .module('mainApp')
         .controller('ProfileController', profileController);
 
-    profileController.$inject = ['$location', 'AppConfig', 'dataFactory', 'bootstrapFactory', '$templateCache'];
+    profileController.$inject = ['$location', '$templateCache', '$rootScope', '$route', 'AppConfig', 'dataFactory', 'bootstrapFactory'];
 
-    function profileController($location, appConfig, dataFactory, bootstrapFactory, $templateCache) {
+    function profileController($location, $templateCache, $rootScope, $route, appConfig, dataFactory, bootstrapFactory) {
         /* jshint validthis:true */
 
-        $templateCache.remove('/Account/Profile');
+        $templateCache.remove(appConfig.accountProfileUrl);
         // or
         //$templateCache.removeAll();
 
@@ -19,14 +19,15 @@
         var vm = this;
         vm.data = {}
         vm.allowChangeCompany = false;
+        vm.sendingData = false;
 
         // properties
 
         Object.defineProperty(vm, "access1C", {
-            get: function() {
+            get: function () {
                 if (vm.data.Access1C) return "B2B доступ разрешен";
                 return "B2B доступ ЗАПРЕЩЁН";
-            } 
+            }
         });
 
         // activate
@@ -37,47 +38,41 @@
 
         // function
 
-        vm.debug = function() {
+        vm.debug = function () {
             console.log(vm);
         }
 
         vm.cancel = function () {
-            console.log(vm.returnUrl.length);
-            if (vm.returnUrl && vm.returnUrl.length > 0) {
-                $location.url(vm.returnUrl);
-                return;
-            }
-            $location.url("/");
+            $rootScope.toPreviousPage();
         }
 
         vm.save = function () {
-            
-            dataFactory.sendForm($location.path(), vm.data, vm.antiforgery).then(function () {
-                console.log("Form sended");
-            }, function() {
-                console.log("Form send Error");
+            vm.sendingData = true;
+            dataFactory.sendForm(appConfig.accountProfileUrl, vm.data).then(function () {
+                bootstrapFactory.showModalConfirmation("Аккаунт успешно обновлен.").then(function () {
+                    $rootScope.toPreviousPage();
+                });
+            }, function (evt) {
+                bootstrapFactory.showModalErrors("Ошибка обновления данных", evt.data);
+                vm.sendingData = false;
             });
         }
 
-        vm.changeCompany = function() {
+        vm.changeCompany = function () {
             vm.allowChangeCompany = true;
         }
 
-        vm.changeEmail = function() {
-            // Необходимо выслать изменение email
+        vm.changeEmail = function () {
             var result = bootstrapFactory.showEmailChangeRequest();
-            //result.then(function () {
-            //    bootstrapFactory.showModalConfirmation('Письмо с инструкциями по изменению электронного адреса выслано на email:' +
-            //        vm.data.Email);
-            //}, function () {
-            //    bootstrapFactory.showModalConfirmation('В процессе отправки письма произошла ошибка.');
-            //});
-
+            console.log(result);
+            result.closed.then(function() {
+                $route.reload();
+            });
         }
 
         vm.sendConfirmation = function () {
             // необходимо выслать подтверждение email
-            var result = dataFactory.sendRequest(appConfig.requestEmailConfirmationUrl, {}, vm.antiforgery);
+            var result = dataFactory.sendRequest(appConfig.requestEmailConfirmationUrl, {});
             result.then(function () {
                 bootstrapFactory.showModalConfirmation('Письмо для подверждения электронного адреса отправлено на email:' +
                                                     vm.data.Email);
