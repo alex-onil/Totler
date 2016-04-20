@@ -10,13 +10,15 @@
             // 3rd Party Modules
             'ui.bootstrap'
         ]).constant("validExternalLink", ["/b2b", "/Account/LogOut", "/Account/Login", "/Account/ForgotPassword"]) // "/Account/Register",
-        .config([
-            "$routeProvider", "$locationProvider", "validExternalLink",
-            function($routeProvider, $locationProvider, validExternalLink) {
+        .config(["$routeProvider", "$locationProvider", "$httpProvider", "validExternalLink",
+            function($routeProvider, $locationProvider, $httpProvider, validExternalLink) {
                 $locationProvider.html5Mode({
                     enabled: true,
                     requireBase: true
                 });
+
+                // Header for Ajax Checking
+                $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
                 //$routeProvider.when("/Home/option1/:message", {
                 //    templateUrl: "/views/option1.html",
@@ -47,6 +49,17 @@
                     templateUrl: "/views/base.html"
                 });
 
+                $routeProvider.when("/Admin", {
+                    templateUrl: "/Admin/Index",
+                    controller: "AdminController",
+                    controllerAs: "Ctrl"
+                });
+
+                $routeProvider.when("/Admin/Index", {
+                    templateUrl: "/Admin/Index",
+                    controller: "AdminController",
+                    controllerAs: "Ctrl"
+                });
                 // Static view
 
                 $routeProvider.when("/Home/Contacts", {
@@ -87,12 +100,17 @@
                     controllerAs: "Ctrl"
                 });
 
-                // Error page
+                // Error pages
 
                 $routeProvider.when("/Home/Error", {
                     templateUrl: "/views/Shared/Error.html",
                     controller: "ErrorController"
                 });
+
+                $routeProvider.when("/Account/AccessDenied", {
+                    templateUrl: "/views/Shared/AccessDenied.html"
+                });
+                
 
                 $routeProvider.otherwise({
                     redirectTo: function(routeParams, path, search) {

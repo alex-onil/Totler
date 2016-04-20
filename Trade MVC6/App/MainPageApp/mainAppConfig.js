@@ -15,7 +15,10 @@
             requestCheckUser: "/Account/CheckUser",
             requestChekEmail: "/Account/CheckEmailDuplicate",
             sendRegister: "/Account/Register",
-            accountProfileUrl: "/Account/Profile"
+            accountProfileUrl: "/Account/Profile",
+            api : {
+                userCrudUrl: '/Api/Users'
+            }
         }
     }
 

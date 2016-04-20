@@ -1,13 +1,5 @@
-﻿@using System.Threading.Tasks
-@using Trade_MVC6.ViewModels.Home
-@model UserStatusViewModel
-@{
-    ViewData["Title"] = "Домашня страница";
-}
-<div class="container">
-    @Html.Partial("Index.Menu", Model)
+﻿
 
-    <ng-view></ng-view>
 
     @*@if (User.Identity.IsAuthenticated)
     {
@@ -34,4 +26,3 @@
         </div>
     </div>*@
     @*<footer class="row"></footer>*@
-</div>

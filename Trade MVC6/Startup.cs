@@ -15,23 +15,23 @@ using Trade_MVC6.Services.EmailSender;
 using Trade_MVC6.Services.JsonSerializer;
 
 namespace Trade_MVC6
-{
-    public class Startup
     {
-        public Startup(IHostingEnvironment env)
+    public class Startup
         {
+        public Startup(IHostingEnvironment env)
+            {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-        }
+            }
 
         public IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+            {
             // Add EF service
             services.AddEntityFramework()
                 .AddSqlServer()
@@ -57,6 +57,8 @@ namespace Trade_MVC6
             {
                 setup.Cookies.ApplicationCookie.LoginPath = new Microsoft.AspNet.Http.PathString("/Account/Login");
                 setup.Cookies.ApplicationCookie.LogoutPath = new Microsoft.AspNet.Http.PathString("/Account/LogOff");
+                setup.Cookies.ApplicationCookie.AccessDeniedPath =
+                    new Microsoft.AspNet.Http.PathString("/Account/AccessDenied");
                 setup.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(1);
             });
 
@@ -83,30 +85,29 @@ namespace Trade_MVC6
 
             //Configure Serializer
             services.AddInstance<IJsonSerializer>(new SimpleSerializer());
-        }
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
+            {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
-            {
+                {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
+                } else
+                {
                 app.UseExceptionHandler("/Home/Error");
-            }
+                }
 
             app.UseIISPlatformHandler();
 
             //var test = Configuration.Get<string>("ConnectionStrings:TempDB");
 
             //Debug.Write(Configuration.Get<string>("ConnectionStrings:TempDB"));
-            
+
             //app.Use(typeof(Katana_Test.KatanaTest), "Log Module >");
             // app.UseMiddleware<Katana_Test.KatanaMiddlewareTest>();
 
@@ -136,14 +137,23 @@ namespace Trade_MVC6
                      name: "default",
                      template: "{controller=Home}/{action=Index}/{id?}");
 
+                    routes.MapRoute(
+                    name: "notFound",
+                    template: "{*url}",
+                    defaults: new
+                        {
+                            controller = "Home",
+                            action = "Index"
+                        });
+
                 });
 
             // Set Default Katana Module
             // app.Properties["builder.DefaultApp"] = defaultModule;
 
-        }
+            }
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        }
     }
-}

@@ -123,7 +123,7 @@ namespace Trade_MVC6.Controllers
 
         #endregion
 
-        [HttpPost, ValidateHeaderAntiForgeryToken, Route("/Account/Register")]
+        [HttpPost, ValidateHeaderAntiForgeryToken, Route("/Account/Register"), AjaxValidate]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
             {
             if (!model.IsValid) return HttpBadRequest(model.ValidationMessages().Select(n => n.ErrorMessage));
@@ -217,8 +217,7 @@ namespace Trade_MVC6.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet, AllowAnonymous]
         public IActionResult ResetPassword(string code = null, string email = null)
             {
             return (code == null || email == null) ?
@@ -249,7 +248,7 @@ namespace Trade_MVC6.Controllers
             }
 
         // GET: /Account/Profile
-        [HttpGet, Authorize, Route("Account/Profile")]
+        [HttpGet, Authorize, Route("Account/Profile"), AjaxValidate]
         public async Task<IActionResult> Profile(string returnUrl)
             {
             var currentUser = await _userManager.Users.Include(b => b.Contact).FirstAsync(u => u.UserName == User.Identity.Name);
@@ -336,11 +335,11 @@ namespace Trade_MVC6.Controllers
 
             }
 
-        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckUser")]
+        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckUser"), AjaxValidate(RedirectToHome = true)]
         public Task<JsonResult> CheckUserName(string userName) =>
             Task.Run(() => Json(_userManager.Users.FirstOrDefault(u => u.UserName.Equals(userName)) == null));
 
-        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckEmailDuplicate")]
+        [HttpGet, ValidateHeaderAntiForgeryToken, Route("/Account/CheckEmailDuplicate"), AjaxValidate(RedirectToHome = true)]
         public Task<JsonResult> CheckEmailDuplicate(string email) =>
             Task.Run(() => Json(_userManager.Users.FirstOrDefault(u => u.NormalizedEmail.Equals(email.ToUpper())) == null));
 

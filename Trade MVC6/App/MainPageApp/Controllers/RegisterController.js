@@ -26,7 +26,7 @@
             var result = dF.sendUserRegistration(vm.data);
             result.then(function () {
 
-                console.log("Send Success");
+                //console.log("Send Success");
 
                 var result = bD.showModalConfirmation("Регистрация прошла успешно. Письмо с инструкциями по подтверждению электронного адреса " +
                     "Вашей учетной записи отправлено на указанный адрес Email." +
@@ -42,8 +42,8 @@
                 });
 
             }, function (evt) {
-                console.log("Send Error");
-                console.log(evt);
+                //console.log("Send Error");
+                //console.log(evt);
                 if (angular.isArray(evt.data)) {
                     var result = bD.showModalErrors("Ошибка регистрации на сервере:", evt.data);
                     result.then(function () {
@@ -60,6 +60,11 @@
 
         function activate() {
             vm.submited = false;
+
+            // if Authorized then redirect to root
+            if ($rootScope.isAuth) {
+                $location.url('/');
+            }
         }
     }
 })();

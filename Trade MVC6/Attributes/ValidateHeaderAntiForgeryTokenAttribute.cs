@@ -2,6 +2,8 @@
 using System.Diagnostics.Contracts;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.AspNet.Antiforgery;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.OptionsModel;
 
 
@@ -42,6 +44,13 @@ namespace Trade_MVC6.Attributes
                         cookieToken = httpContext.Request.Cookies[cookieName];
                     }
                 }
+
+            if (string.IsNullOrEmpty(formToken) || string.IsNullOrEmpty(cookieToken))
+            {
+                filterContext.Result = new ViewResult {ViewName = "~/Views/Home/Index.cshtml"};
+                return;
+            }
+
             var afTokenSet = new AntiforgeryTokenSet(formToken, cookieToken);
 
             antiforgeryService.ValidateTokens(httpContext, afTokenSet);

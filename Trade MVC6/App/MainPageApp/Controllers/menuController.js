@@ -34,6 +34,10 @@
             $location.path('/b2b');
         }
 
+        vm.admin = function () {
+            $location.path('/Admin');
+        }
+
         function moveToUrlWithReturn(url) {
             if ($location.path() === url) return;
             var currentUrl = $location.url();

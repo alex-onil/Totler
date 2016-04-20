@@ -11,29 +11,34 @@
     <link href="~/lib/flat-ui/dist/css/flat-ui.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/static.css" rel="stylesheet" />
-    <link href="~/css/login-window.css" rel="stylesheet" />
+    <link href="~/css/login-window.css" rel="stylesheet"/>
+    <link href="~/lib/angular/angular-csp.css" rel="stylesheet" />
 
 </head>
-<body ng-init="antiforgery = '@Html.Raw(Context.RequestVerificationToken())';
-               authorized = '@User.Identity.IsAuthenticated'">
-<script src="~/lib/jquery/dist/jquery.js"></script>
-@*<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>*@
+<body ng-init="antiforgery = '@Html.Raw(Context.RequestVerificationToken())'">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>*@
     @*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
+    <div class="container">
+        @Html.Partial("Index.Menu")
+        @RenderBody()
+        <ng-view></ng-view>
+    </div>
 
-    @RenderBody()
+
+
+
     @*@RenderSection("scripts", required: false)*@
-
-
     <script src="~/lib/videojs/dist/video-js/video.js"></script>
     <script src="~/lib/flat-ui/dist/js/flat-ui.js"></script>
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular-route/angular-route.js"></script>
-<script src="~/lib/angular-resource/angular-resource.js"></script>
+    <script src="~/lib/angular-resource/angular-resource.js"></script>
     <script src="~/lib/angular-animate/angular-animate.js"></script>
     <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="~/js/angular-app.min.js"></script>
-<script src="~/js/site.js"></script>
+    <script src="~/js/site.js"></script>
 
 </body>
 </html>

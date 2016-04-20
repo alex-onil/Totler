@@ -1,6 +1,6 @@
-﻿@model Trade_MVC6.ViewModels.Home.UserStatusViewModel
+﻿@using Trade_MVC6.Models.Identity
 
-<div class="row navigation">
+<div class="row navigation" ng-init="isAuth = @User.Identity.IsAuthenticated.ToString().ToLower(); isAdmin = @User.IsInRole(Roles.Admin).ToString().ToLower()">
     <nav class="navbar navbar-default col-sm-12" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
@@ -59,23 +59,15 @@
                     </div>
                 </form>*@
 
-            <div class="navbar-right" ng-controller="MenuController as Ctrl">
-                @if (Model.IsAuthenticated)
-                    {
-                    if (Model.IsAdmin)
-                        {
-                        <a class="btn btn-danger navbar-btn  btn-xs">Администрирование</a>
-                        }
-                        <a class="btn btn-info navbar-btn  btn-xs" ng-click="Ctrl.profile()">Аккаунт</a>
+            <div class="navbar-right" ng-cloak ng-controller="MenuController as Ctrl">
+                <a class="btn btn-danger navbar-btn  btn-xs" ng-if="isAuth && isAdmin" ng-click="Ctrl.admin()">Администрирование</a>
 
-                        <a class="btn btn-primary navbar-btn  btn-xs" ng-click="Ctrl.logOff()">Выход</a>
-                    } else
-                    {
-                    <a class="btn btn-success navbar-btn  btn-xs" ng-click="Ctrl.register()">Регистрация</a>
-                    <a class="btn btn-primary navbar-btn  btn-xs" ng-click="Ctrl.login()">Вход</a>
-                    }
+                <a class="btn btn-success navbar-btn  btn-xs" ng-if="!isAuth" ng-click="Ctrl.register()">Регистрация</a>
+                <a class="btn btn-primary navbar-btn  btn-xs" ng-if="!isAuth" ng-click="Ctrl.login()">Вход</a>
 
-                <a class="btn btn-default navbar-btn btn-xs" ng-click="Ctrl.b2b()">B2B</a>
+                <a class="btn btn-info navbar-btn  btn-xs" ng-if="isAuth" ng-click="Ctrl.profile()">Аккаунт</a>
+                <a class="btn btn-primary navbar-btn  btn-xs" ng-if="isAuth" ng-click="Ctrl.logOff()">Выход</a>
+                <a class="btn btn-default navbar-btn btn-xs" ng-if="isAuth" ng-click="Ctrl.b2b()">B2B</a>
             </div>
         </div><!-- /.navbar-collapse -->
     </nav><!-- /navbar -->
