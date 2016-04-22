@@ -5,9 +5,9 @@
         .module('mainApp')
         .factory('dataFactory', dataService);
 
-    dataService.$inject = ['$http', 'AppConfig', '$rootScope'];
+    dataService.$inject = ['$http', '$rootScope', 'AppConfig'];
 
-    function dataService($http, appConfig, $rootScope) {
+    function dataService($http, $rootScope, appConfig) {
         var service = {
             sendForm: sendFormData,
             sendRequest: sendRequestByUrl,

@@ -1,0 +1,31 @@
+﻿<div class="modal-body">
+    <form novalidate name="Account1CActivate" class="form-horizontal panel-body" ng-show="true">
+        <div class="form-group">
+            <label>Контрагент 1С</label>
+            <select class="form-control select"></select>
+        </div>
+        <button class="btn btn-success" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.ok()">Готово</button>
+        <button class="btn btn-warning" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.close()">Отмена</button>
+    </form>
+</div>
+
+<!--<form novalidate name="EmailChangeForm" class="form-horizontal panel-body" ng-show="true">
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" name="Email" type="text" placeholder="Новый Email" required ng-model="Ctrl.data.Email"
+               ng-pattern="/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i" />
+        <span class="text-danger" ng-show="EmailChangeForm.Email.$dirty && EmailChangeForm.Email.$invalid">
+            Введите валидный Email адрес.
+        </span>
+
+    </div>
+    <div class="form-group">
+        <label>Подтвердите Email</label>
+        <input class="form-control" name="EmailConfirm" type="text" compare-to="Ctrl.data.Email" ng-model="Ctrl.data.EmailConfirm" placeholder="Подтвердите Email" />
+        <span class="text-danger" ng-show="EmailChangeForm.Email.$dirty && EmailChangeForm.EmailConfirm.$invalid">
+            Пароли не совпадают.
+        </span>
+    </div>
+    <button class="btn btn-success" type="button" ng-disabled="EmailChangeForm.$invalid || Ctrl.IsSending" ng-click="Ctrl.ok()">Готово</button>
+    <button class="btn btn-warning" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.close()">Отмена</button>
+</form>-->

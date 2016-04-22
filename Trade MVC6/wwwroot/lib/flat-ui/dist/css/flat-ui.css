@@ -2524,7 +2524,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
 .pager li > span span + [class*="fui-"] {
   margin-left: 8px;
 }
-.pagination {
+/*.pagination {
   position: relative;
   display: block;
 }
@@ -2771,7 +2771,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   .pagination ul > li > a {
     border-radius: 0;
   }
-}
+}*/
 .pagination-danger ul {
   background-color: #e74c3c;
 }

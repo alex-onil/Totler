@@ -13,6 +13,8 @@ using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.Services.EmailSender;
 using Trade_MVC6.Services.JsonSerializer;
+using Trade_MVC6.Services._1С;
+using Trade_MVC6.Services._1С.Providers;
 
 namespace Trade_MVC6
     {
@@ -85,6 +87,10 @@ namespace Trade_MVC6
 
             //Configure Serializer
             services.AddInstance<IJsonSerializer>(new SimpleSerializer());
+
+            //Configure 1C Provider
+            services.AddInstance<IProvider1C>(new Provider1C(new ProviderUsers1C(), null, null));
+
             }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

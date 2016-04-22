@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Trade_MVC6.ViewModels
 {
@@ -18,6 +19,7 @@ namespace Trade_MVC6.ViewModels
             );
             }
 
+        [JsonIgnore]
         public bool IsValid => Validator.TryValidateObject(
                 this, new ValidationContext(this, null, null),
                 new List<ValidationResult>());

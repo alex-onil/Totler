@@ -1,1 +1,68 @@
-﻿<h1>Длинный список пользователей</h1>
+﻿<div class="row">
+    <div class="col-md-7">
+        <div class="btn-group btn-group-xs" ng-click="Ctrl.reCalculate()">
+            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="null">Все</label>
+            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="true">Активированные</label>
+            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="false">Без доступа</label>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <label>На стр.:</label>
+        <select class="select select-sm select-primary" ng-model="Ctrl.itemsPerPage" ng-change="Ctrl.reCalculate()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+</div>
+<div class="panel panel-info" ng-cloak>
+    <div class="panel-heading">
+        <h6 class="panel-title">Пользователи</h6>
+    </div>
+    <!--<div class="panel-body">-->
+    <table class="table table-hover">
+        <!--<caption>Всего страниц: 1</caption>-->
+        <thead>
+            <tr>
+                <td>Логин</td>
+                <td>Email</td>
+                <td>Компания</td>
+                <td>Статус</td>
+                <td>Управление</td>
+            </tr>
+        </thead>
+        <tbody ng-repeat="user in Ctrl.users | limitTo:Ctrl.itemsPerPage:Ctrl.itemsPerPage*(Ctrl.currentPage - 1) ">
+            <tr>
+                <td>
+                    {{user.Nickname}}
+                </td>
+                <td>
+                    {{user.Email}}
+                </td>
+                <td>
+                    {{user.CompanyName}}
+                </td>
+                <td ng-class="user.Access1C ? 'text-success' : 'text-danger'">
+                    {{user.Access1C ? "Доступ к 1С Включен" : "Доступа 1С НЕТ"}} <br />
+                    <button type="button" class="btn btn-primary btn-xs" ng-show="!user.Access1C" ng-click="Ctrl.activate1c(user)">Активация</button>
+                    <button type="button" class="btn btn-warning btn-xs" ng-show="user.Access1C">Отключить</button>
+                    <button type="button" class="btn btn-primary btn-xs" ng-show="user.Access1C">Изменить</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default btn-xs">Редактировать</button>
+                    <button type="button" class="btn btn-danger btn-xs">Удалить</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--</div>-->
+    <uib-pagination class="pagination-sm pagination-minimal pull-right" total-items="Ctrl.totalItems" ng-model="Ctrl.currentPage"
+                    max-size="Ctrl.maxSize" items-per-page="Ctrl.itemsPerPage" boundary-link-numbers="true"
+                    rotate="false" previous-text="‹" next-text="›" first-text="«" last-text="»"></uib-pagination>
+</div>
+
+<div class="row">
+    <button type="button" class="btn btn-info" ng-click="Ctrl.reLoad()">Обновить</button>
+</div>

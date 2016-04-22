@@ -11,7 +11,8 @@
         var service = {
             showModalConfirmation: showModalcfrm,
             showModalErrors:showModalErr,
-            showEmailChangeRequest: showEmailChange
+            showEmailChangeRequest: showEmailChange,
+            showAccount1CActivationDialog: $$ShowAccount1CActivation
         };
 
         // ---------------------------
@@ -81,7 +82,7 @@
 
         function showEmailChange() {
 
-            console.log("show change email");
+            //console.log("show change email");
             
             var opt = {
                 backdrop: false,
@@ -96,6 +97,24 @@
             return $uibModal.open(opt);
         }
 
+        function $$ShowAccount1CActivation(account)
+        {
+            var opts = {
+                backdrop: false,
+                keyboard: true,
+                backdropClick: true,
+                size: 'lg',
+                templateUrl: '/views/dialogs/Account1CActivate.html',
+                controller: 'Account1CActivateController',
+                controllerAs: 'Ctrl'
+            };
+
+            opts.resolve = {
+                account: account
+                }
+
+            return $uibModal.open(opts); 
+        }
     }
 
 })();

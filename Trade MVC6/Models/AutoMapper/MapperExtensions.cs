@@ -19,6 +19,9 @@ namespace Trade_MVC6.Models.AutoMapper
 
                 // RegisterViewModel
                 cfg.AddProfile<RegisterViewModelProfile>();
+
+                // UserViewModel
+                cfg.AddProfile<UserViewModelProfile>();
             });
             var mapper = config.CreateMapper(); 
             services.AddInstance(typeof(IMapper), mapper);

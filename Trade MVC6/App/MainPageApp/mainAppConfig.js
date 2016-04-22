@@ -18,6 +18,9 @@
             accountProfileUrl: "/Account/Profile",
             api : {
                 userCrudUrl: '/Api/Users'
+            },
+            api1C : {
+                apiUsers: '/api/1C/Users'
             }
         }
     }
