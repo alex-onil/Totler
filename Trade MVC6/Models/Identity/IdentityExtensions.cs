@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 using Trade_MVC6.Models.B2BStrore;
 using Trade_MVC6.Models.Identity.AccountDetails;
+using Trade_MVC6.Models._1C;
 
 namespace Trade_MVC6.Models.Identity
     {
     public static class IdentityExtensions
         {
+        #region Configuration
+
+        private static RoleManager<IdentityRole> _roleManager;
+        private static UserManager<ApplicationUser> _userManager;
+
         public static void EnsureRolesCreated(this IApplicationBuilder app)
             {
             var context = app.ApplicationServices.GetServices<ApplicationDbContext>();
@@ -17,12 +24,13 @@ namespace Trade_MVC6.Models.Identity
             //{
 
             //}
-            var roleManager = app.ApplicationServices.GetService<RoleManager<IdentityRole>>();
+            _roleManager = app.ApplicationServices.GetService<RoleManager<IdentityRole>>();
+
             foreach (var role in Roles.All)
                 {
-                if (!roleManager.RoleExistsAsync(role.ToUpper()).Result)
+                if (!_roleManager.RoleExistsAsync(role.ToUpper()).Result)
                     {
-                    roleManager.CreateAsync(new IdentityRole { Name = role }).Wait();
+                    _roleManager.CreateAsync(new IdentityRole { Name = role }).Wait();
                     }
 
                 }
@@ -30,9 +38,10 @@ namespace Trade_MVC6.Models.Identity
 
         public static void EnsureRootCreated(this IApplicationBuilder app)
             {
-            var userManager = app.ApplicationServices.GetService<UserManager<ApplicationUser>>();
+            _userManager = app.ApplicationServices.GetService<UserManager<ApplicationUser>>();
 
-            if (userManager.FindByNameAsync(ApplicationUser.Admin.UserName).Result == null)
+
+            if (_userManager.FindByNameAsync(ApplicationUser.Admin.UserName).Result == null)
                 {
                 var adminUser = ApplicationUser.Admin;
 
@@ -40,21 +49,37 @@ namespace Trade_MVC6.Models.Identity
                 // Possible need to check IdentityResult
 
                 var context = app.ApplicationServices.GetService<B2BDbContext>();
-                    var contact = new ContactRecord
+                var contact = new ContactRecord
                     {
-                        CreationAuthor = "System",
-                        CreationDate = DateTime.Now,
-                        LastEditDate = DateTime.Now,
-                        LastEditor = "System"
+                    CreationAuthor = "System",
+                    CreationDate = DateTime.Now,
+                    LastEditDate = DateTime.Now,
+                    LastEditor = "System"
                     };
                 context.Add(contact);
                 adminUser.Contact = contact;
-                userManager.CreateAsync(adminUser, "123456").Wait();
+                _userManager.CreateAsync(adminUser, "123456").Wait();
 
 
-                userManager.AddToRoleAsync(adminUser, Roles.Admin).Wait();
+                _userManager.AddToRoleAsync(adminUser, Roles.Admin).Wait();
                 }
 
             }
+
+        #endregion
+
+        #region User Operations
+        public static Task Activate1CAccessAsync(this UserManager<ApplicationUser> usermanager, ApplicationUser user, User1C user1C)
+        {
+            user.Account1CId = user1C.Id;
+            return usermanager.AddToRoleAsync(user, Roles.User1C);
+        }
+
+        public static Task Deactivate1CAccessAsync(this UserManager<ApplicationUser> usermanager, ApplicationUser user)
+            {
+            user.Account1CId = null;
+            return usermanager.RemoveFromRoleAsync(user, Roles.User1C);
+            }
+        #endregion
         }
     }

@@ -9,6 +9,8 @@ namespace Trade_MVC6.ViewModels.Admin
 {
     public class UserViewModel : AbstractValidator
         {
+        public string Id { get; set; }
+
         [Required]
         [StringLength(15, ErrorMessage = "Длинна должна быть в пределах от {2} до {1} символов.", MinimumLength = 3)]
         public string Nickname { get; set; }

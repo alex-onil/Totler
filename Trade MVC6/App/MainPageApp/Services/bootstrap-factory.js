@@ -9,17 +9,18 @@
 
     function bootstrapDialog($uibModal, $q) {
         var service = {
-            showModalConfirmation: showModalcfrm,
-            showModalErrors:showModalErr,
-            showEmailChangeRequest: showEmailChange,
-            showAccount1CActivationDialog: $$ShowAccount1CActivation
+            showModalConfirmation: $$ShowModalcfrm,
+            showModalErrors: $$ShowModalErr,
+            showEmailChangeRequest: $$ShowEmailChange,
+            showAccount1CActivationDialog: $$ShowAccount1CActivation,
+            showYesNo: $$ShowYesNo
         };
 
         // ---------------------------
 
         var modalTemplate = '<div class="modal-body">' +
             '<div class="panel panel-info" ng-show="true">' +
-            '   <div class = "panel-body"> '+
+            '   <div class = "panel-body"> ' +
             '      <p>{{Ctrl.info}}</p>' +
             '   </div>' +
             ' </div>' +
@@ -33,7 +34,7 @@
 
         return service;
 
-        function showModalcfrm(message) {
+        function $$ShowModalcfrm(message) {
 
             var opts = {
                 backdrop: false,
@@ -54,7 +55,7 @@
             return $uibModal.open(opts);
         }
 
-        function showModalErr(header, messages) {
+        function $$ShowModalErr(header, messages) {
 
             if (!angular.isArray(messages)) {
                 return $q.when();
@@ -80,10 +81,10 @@
             return $uibModal.open(opts);
         }
 
-        function showEmailChange() {
+        function $$ShowEmailChange() {
 
             //console.log("show change email");
-            
+
             var opt = {
                 backdrop: false,
                 keyboard: true,
@@ -97,8 +98,7 @@
             return $uibModal.open(opt);
         }
 
-        function $$ShowAccount1CActivation(account)
-        {
+        function $$ShowAccount1CActivation(account) {
             var opts = {
                 backdrop: false,
                 keyboard: true,
@@ -111,9 +111,35 @@
 
             opts.resolve = {
                 account: account
-                }
+            }
 
-            return $uibModal.open(opts); 
+            return $uibModal.open(opts);
+        }
+
+        function $$ShowYesNo(message) {
+
+            var template = '<div class="modal-body" ng-cloak>' +
+                '<p>{{Ctrl.message}}</p>' +
+                ' <button type="button" class="btn btn-warning" data-ng-click="Ctrl.yes()">Да</button> ' +
+                ' <button type="button" class="btn btn-success" data-ng-click="Ctrl.no()">Нет</button> ' +
+                '</div>';
+
+            var opts = {
+                backdrop: true,
+                keyboard: true,
+                backdropClick: true,
+                size: 'lg',
+                template: template,
+                controller: ['$uibModalInstance', function ($uibModalInstance) {
+                    var vm = this;
+                    vm.message = message;
+                    vm.yes = $uibModalInstance.close;
+                    vm.no = $uibModalInstance.dismiss;
+                }],
+                controllerAs: 'Ctrl'
+            };
+
+            return $uibModal.open(opts).result;
         }
     }
 

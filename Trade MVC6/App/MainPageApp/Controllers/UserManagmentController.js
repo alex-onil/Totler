@@ -22,6 +22,8 @@
 
         vm.activate1c = bootstrapFactory.showAccount1CActivationDialog;
 
+        vm.deactivate1c = $$Deactivate1C;
+
         vm.reCalculate = calculateItems;
 
         vm.reLoad = loadDataFromServer;
@@ -72,6 +74,18 @@
             vm.users = $filter('access1c')(vm.originalData, vm.viewMode);
             //console.log(vm.users);
             vm.totalItems = vm.users.length;
+        }
+
+        function $$Deactivate1C(user) {
+            var result = bootstrapFactory.showYesNo("Отключить доступ к 1С для аккаунта " + user.Nickname + '(' +
+            user.Email + ')');
+            result.then(function(recive) {
+                var updateResult = userFactory.deactivate1C(user.Id);
+                updateResult.success(function(recive) {
+                    console.log(recive);
+                    angular.extend(user, recive);
+                });
+            });
         }
     }
 })();

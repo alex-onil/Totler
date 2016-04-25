@@ -10,7 +10,7 @@
     function user1CFactory($http, $rootScope, config) {
         var service = {
             //get: $get,
-            query: $query
+            query: $$Query
         };
 
         var req = {
@@ -23,11 +23,13 @@
 
         return service;
 
-        function $query() {
+        function $$Query() {
             req.method = 'GET';
             return $http(req);
         }
 
         //function $get(id) { }
+
+
     }
 })();

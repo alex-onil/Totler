@@ -1,10 +1,17 @@
 ﻿<div class="modal-body">
-    <form novalidate name="Account1CActivate" class="form-horizontal panel-body" ng-show="true">
+    <form novalidate name="Account1CActivate" ng-show="true">
         <div class="form-group">
             <label>Контрагент 1С</label>
-            <select class="form-control select"></select>
+            <span class="text-danger" ng-show="Account1CActivate.Account1C.$dirty && Account1CActivate.Account1C.$invalid"></span>
+            <div class="input-group">
+                <select name="Account1C" class="form-control" ng-options="item as item.NameFull for item in Ctrl.accounts1C track by item.Id"
+                        ng-model="Ctrl.selected" required></select>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="Ctrl.reLoadUsers()"><span class="glyphicon glyphicon-repeat"></span></button>
+                </span>
+            </div>
         </div>
-        <button class="btn btn-success" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.ok()">Готово</button>
+        <button class="btn btn-success" type="button" ng-disabled="Ctrl.IsSending || Account1CActivate.$invalid" ng-click="Ctrl.ok()">Активировать</button>
         <button class="btn btn-warning" type="button" ng-disabled="Ctrl.IsSending" ng-click="Ctrl.close()">Отмена</button>
     </form>
 </div>

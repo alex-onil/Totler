@@ -11,56 +11,107 @@
 
         var opts = {
             url: config.api.userCrudUrl,
-            headers: { "__RequestVerificationToken": $rootScope.antiforgery }
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                "__RequestVerificationToken": $rootScope.antiforgery
+            }
         }
 
         var service = {
             // get: $$get,
-            save: $$save,
+            save: $$Save,
             // query: $$query,
-            remove: $$remove,
-            create: $$create
+            remove: $$Remove,
+            create: $$Create,
+            activate1c: $$Activate,
+            deactivate1C: $$Deactivate
         };
 
-        Object.defineProperty(service,'get', { get: $$get });
+        Object.defineProperty(service,'get', { get: $$Get });
 
-        Object.defineProperty(service, 'query', { get: $$query });
+        Object.defineProperty(service, 'query', { get: $$Query });
 
         return service;
 
-        function $$get(id) {
-            opts.url += "/" + id;
-            opts.method = "GET";
+        function $$Get(id) {
+            var request = angular.extend({
+                method: "POST"
+            }, opts);
 
-            return $http(opts);
+            request.url += "/" + id;
+
+            return $http(request);
         }
 
-        function $$create(value) {
-            opts.data = value;
-            opts.method = "POST";
+        function $$Create(value) {
+            //opts.data = value;
+            //opts.method = "POST";
+            var request = angular.extend({
+                method: "POST",
+                data: value
+            }, opts);
 
-            return $http(opts);
+            return $http(request);
         }
 
-        function $$save(value) {
-            opts.url += "/" + value.id;
-            opts.data = value;
-            opts.method = "PUT";
+        function $$Save(value) {
+            //opts.url += "/" + value.id;
+            //opts.data = value;
+            //opts.method = "PUT";
 
-            return $http(opts);
+            var request = angular.extend({
+                method: "PUT",
+                data: value
+            }, opts);
+
+            request.url += "/" + value.id;
+
+            return $http(request);
         }
 
-        function $$query() {
-            opts.method = "GET";
+        function $$Query() {
+            //opts.method = "GET";
+            var request = angular.extend({
+                method: "GET"
+            }, opts);
 
-            return $http(opts);
+            return $http(request);
         }
 
-        function $$remove(id) {
-            opts.url += "/" + id;
-            opts.method = "DELETE";
+        function $$Remove(id) {
+            //opts.url += "/" + id;
+            //opts.method = "DELETE";
 
-            return $http(opts);
+            var request = angular.extend({
+                method: "DELETE"
+            }, opts);
+
+            request.url += "/" + id;
+
+            return $http(request);
+        }
+
+        function $$Activate(userId, id1C) {
+            var request = angular.extend({
+                method: 'POST',
+                params: { id1C: id1C}
+            }, opts);
+
+            request.url += "/" + userId;
+
+            return $http(request);
+
+        }
+
+        function $$Deactivate(userId) {
+
+            var request = angular.extend({
+                method: 'POST'
+            }, opts);
+
+            request.url += "/" + userId + "/Deactivate"; 
+
+            return $http(request);
         }
     }
 })();

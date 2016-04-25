@@ -47,7 +47,7 @@
                 <td ng-class="user.Access1C ? 'text-success' : 'text-danger'">
                     {{user.Access1C ? "Доступ к 1С Включен" : "Доступа 1С НЕТ"}} <br />
                     <button type="button" class="btn btn-primary btn-xs" ng-show="!user.Access1C" ng-click="Ctrl.activate1c(user)">Активация</button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-show="user.Access1C">Отключить</button>
+                    <button type="button" class="btn btn-warning btn-xs" ng-show="user.Access1C" ng-click="Ctrl.deactivate1c(user)">Отключить</button>
                     <button type="button" class="btn btn-primary btn-xs" ng-show="user.Access1C">Изменить</button>
                 </td>
                 <td>
