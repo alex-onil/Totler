@@ -22,7 +22,6 @@
             save: $$Save,
             // query: $$query,
             remove: $$Remove,
-            create: $$Create,
             activate1c: $$Activate,
             deactivate1C: $$Deactivate
         };
@@ -43,34 +42,18 @@
             return $http(request);
         }
 
-        function $$Create(value) {
-            //opts.data = value;
-            //opts.method = "POST";
-            var request = angular.extend({
-                method: "POST",
-                data: value
-            }, opts);
-
-            return $http(request);
-        }
-
         function $$Save(value) {
-            //opts.url += "/" + value.id;
-            //opts.data = value;
-            //opts.method = "PUT";
-
             var request = angular.extend({
                 method: "PUT",
                 data: value
             }, opts);
 
-            request.url += "/" + value.id;
+            request.url += "/" + value.Id;
 
             return $http(request);
         }
 
         function $$Query() {
-            //opts.method = "GET";
             var request = angular.extend({
                 method: "GET"
             }, opts);
@@ -79,8 +62,6 @@
         }
 
         function $$Remove(id) {
-            //opts.url += "/" + id;
-            //opts.method = "DELETE";
 
             var request = angular.extend({
                 method: "DELETE"

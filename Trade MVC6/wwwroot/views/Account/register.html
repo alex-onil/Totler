@@ -1,7 +1,7 @@
 ﻿<article class="panel panel-default">
         <h1 class="panel-heading text-info">Страница регистрации пользователей</h1>
 
-        <form name="RegisterForm" class="form-horizontal panel-body" role="form" novalidate ng-submit="Ctrl.submit(GlobalCtrl.antiforgery)">
+        <form name="RegisterForm" class="form-horizontal panel-body" role="form" novalidate ng-submit="Ctrl.submit()">
 
             <div class="form-group" ng-class="{'has-success' : RegisterForm.CompanyName.$valid,
                                                'has-error' :  RegisterForm.CompanyName.$invalid && RegisterForm.CompanyName.$dirty,

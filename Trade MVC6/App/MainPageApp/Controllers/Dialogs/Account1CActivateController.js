@@ -44,26 +44,16 @@
                 console.log("Failed activate: " + recive);
                 bF.showModalErrors("Ошибка", recive.data);
             });
-            //vm.IsSending = true;
-            //var result = dF.sendEmailChangeRequest(vm.data.Email);
-            //result.then(function () {
-            //    $uibModalInstance.close();
-            //    bF.showModalConfirmation("Для изменения Email следуйте дальнейшим инструкциям " +
-            //        "в письме отправленном на новый электронный адрес( " + vm.data.Email + " ). ");
-            //}, function() {
-            //    bF.showModalErrors("Ошибка изменения Email.", "При изменении электронного адреса произошла ошибка.");
-            //    vm.IsSending = false;
-            //});
         }
 
         function $$LoadUsers() {
             vm.accounts1C = [];
-            api1C.users.query().then(function(recive) {
+            api1C.users.query().then(function (recive) {
                 console.log("Load Success " + recive);
                 if (angular.isArray(recive.data)) {
                     vm.accounts1C = recive.data;
                 }
-            }, function(recive) {
+            }, function (recive) {
                 console.log("Failed load: " + recive);
                 bF.showModalErrors("Ошибка", recive.data);
             });

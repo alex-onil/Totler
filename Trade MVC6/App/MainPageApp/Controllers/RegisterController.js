@@ -5,9 +5,9 @@
         .module('mainApp')
         .controller('RegisterController', registerController);
 
-    registerController.$inject = ['$location', '$rootScope', 'dataFactory', 'bootstrapFactory'];
+    registerController.$inject = ['$scope','$location', '$rootScope', 'dataFactory', 'bootstrapFactory'];
 
-    function registerController($location, $rootScope, dF, bD) {
+    function registerController($scope, $location, $rootScope, dF, bD) {
         /* jshint validthis:true */
         var vm = this;
         vm.submiting = false;
@@ -22,8 +22,18 @@
         }
 
         vm.submit = function () {
+
+            // Check for Valid form data
+            if ($scope.RegisterForm.$invalid) {
+                vm.submited = true;
+                return;
+            }
+
             vm.submiting = true;
             var result = dF.sendUserRegistration(vm.data);
+
+            //if (vm.)
+
             result.then(function () {
 
                 //console.log("Send Success");

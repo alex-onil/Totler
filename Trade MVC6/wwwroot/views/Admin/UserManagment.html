@@ -1,68 +1,167 @@
-﻿<div class="row">
-    <div class="col-md-7">
-        <div class="btn-group btn-group-xs" ng-click="Ctrl.reCalculate()">
-            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="null">Все</label>
-            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="true">Активированные</label>
-            <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="false">Без доступа</label>
+﻿<div ng-cloak ng-switch on="Ctrl.mode">
+    <div class="animate-switch" ng-switch-default>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="btn-group btn-group-xs" ng-click="Ctrl.reCalculate()">
+                    <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="null">Все</label>
+                    <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="true">Активированные</label>
+                    <label class="btn btn-primary" ng-model="Ctrl.viewMode" uib-btn-radio="false">Без доступа</label>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label>На стр.:</label>
+                <select class="select select-sm select-primary" ng-model="Ctrl.itemsPerPage" ng-change="Ctrl.reCalculate()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-cloak>
+            <div class="panel-heading">
+                <h6 class="panel-title">Пользователи</h6>
+            </div>
+            <!--<div class="panel-body">-->
+            <table class="table table-hover">
+                <!--<caption>Всего страниц: 1</caption>-->
+                <thead>
+                    <tr>
+                        <td>Логин</td>
+                        <td>Email</td>
+                        <td>Компания</td>
+                        <td>Статус</td>
+                        <td>Управление</td>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="user in Ctrl.users | limitTo:Ctrl.itemsPerPage:Ctrl.itemsPerPage*(Ctrl.currentPage - 1) ">
+                    <tr>
+                        <td>
+                            {{user.Nickname}}
+                        </td>
+                        <td>
+                            {{user.Email}}
+                        </td>
+                        <td>
+                            {{user.CompanyName}}
+                        </td>
+                        <td ng-class="user.Access1C ? 'text-success' : 'text-danger'">
+                            {{user.Access1C ? "Доступ к 1С Включен" : "Доступа 1С НЕТ"}} <br />
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    ng-show="!user.Access1C"
+                                    ng-click="Ctrl.activate1c(user)"
+                                    ng-disabled="Ctrl.btnDisabled">Активация</button>
+
+                            <button type="button" class="btn btn-warning btn-xs"
+                                    ng-show="user.Access1C"
+                                    ng-click="Ctrl.deactivate1c(user)"
+                                    ng-disabled="Ctrl.btnDisabled">Отключить</button>
+
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    ng-show="user.Access1C"
+                                    ng-disabled="Ctrl.btnDisabled">Изменить</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-xs"
+                                    ng-click="Ctrl.editUser(user)"
+                                    ng-disabled="Ctrl.btnDisabled">Редактировать</button>
+
+                            <button type="button" class="btn btn-danger btn-xs"
+                                    ng-click="Ctrl.deleteUser(user)"
+                                    ng-disabled="Ctrl.btnDisabled">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--</div>-->
+            <uib-pagination class="pagination-sm pagination-minimal pull-right" total-items="Ctrl.totalItems" ng-model="Ctrl.currentPage"
+                            max-size="Ctrl.maxSize" items-per-page="Ctrl.itemsPerPage" boundary-link-numbers="true"
+                            rotate="false" previous-text="‹" next-text="›" first-text="«" last-text="»"
+                            ng-disabled="Ctrl.btnDisabled"></uib-pagination>
+        </div>
+        <div class="row">
+            <button type="button" class="btn btn-info"
+                    ng-click="Ctrl.reLoad()"
+                    ng-disabled="Ctrl.btnDisabled">Обновить</button>
         </div>
     </div>
-    <div class="col-md-5">
-        <label>На стр.:</label>
-        <select class="select select-sm select-primary" ng-model="Ctrl.itemsPerPage" ng-change="Ctrl.reCalculate()">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-        </select>
-    </div>
-</div>
-<div class="panel panel-info" ng-cloak>
-    <div class="panel-heading">
-        <h6 class="panel-title">Пользователи</h6>
-    </div>
-    <!--<div class="panel-body">-->
-    <table class="table table-hover">
-        <!--<caption>Всего страниц: 1</caption>-->
-        <thead>
-            <tr>
-                <td>Логин</td>
-                <td>Email</td>
-                <td>Компания</td>
-                <td>Статус</td>
-                <td>Управление</td>
-            </tr>
-        </thead>
-        <tbody ng-repeat="user in Ctrl.users | limitTo:Ctrl.itemsPerPage:Ctrl.itemsPerPage*(Ctrl.currentPage - 1) ">
-            <tr>
-                <td>
-                    {{user.Nickname}}
-                </td>
-                <td>
-                    {{user.Email}}
-                </td>
-                <td>
-                    {{user.CompanyName}}
-                </td>
-                <td ng-class="user.Access1C ? 'text-success' : 'text-danger'">
-                    {{user.Access1C ? "Доступ к 1С Включен" : "Доступа 1С НЕТ"}} <br />
-                    <button type="button" class="btn btn-primary btn-xs" ng-show="!user.Access1C" ng-click="Ctrl.activate1c(user)">Активация</button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-show="user.Access1C" ng-click="Ctrl.deactivate1c(user)">Отключить</button>
-                    <button type="button" class="btn btn-primary btn-xs" ng-show="user.Access1C">Изменить</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-default btn-xs">Редактировать</button>
-                    <button type="button" class="btn btn-danger btn-xs">Удалить</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <!--</div>-->
-    <uib-pagination class="pagination-sm pagination-minimal pull-right" total-items="Ctrl.totalItems" ng-model="Ctrl.currentPage"
-                    max-size="Ctrl.maxSize" items-per-page="Ctrl.itemsPerPage" boundary-link-numbers="true"
-                    rotate="false" previous-text="‹" next-text="›" first-text="«" last-text="»"></uib-pagination>
-</div>
+    <div claass="animate-switch" ng-switch-when="edit">
+        <h1>Редактирование пользователя {{Ctrl.editor.model.Nickname}}</h1>
 
-<div class="row">
-    <button type="button" class="btn btn-info" ng-click="Ctrl.reLoad()">Обновить</button>
+        <form role="form" name="UserPropForm" novalidate ng-submit="Ctrl.editor.save()">
+            <div class="panel panel-info">
+                <div class="panel-heading">ID {{Ctrl.editor.model.Id}}</div>
+                <div class="panel-body">
+
+
+                    <div class="form-group" ng-class="{'has-success' : UserPropForm.CompanyName.$valid,
+                                               'has-error' :  UserPropForm.CompanyName.$invalid && UserPropForm.CompanyName.$dirty,
+                                               'has-error' : UserPropForm.CompanyName.$invalid && Ctrl.editor.submited}">
+                        <label>Название компании</label>
+                        <input name="CompanyName" type="text" class="form-control" placeholder="Название компании" required ng-model="Ctrl.editor.model.CompanyName"/>
+                        <div ng-show="UserPropForm.CompanyName.$dirty || Ctrl.editor.submited">
+                            <span class="text-danger" ng-show="UserPropForm.CompanyName.$error.required">Название компании обязательно.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email {{Ctrl.editor.model.Email}}</label>
+                        <!--<input type="text" name="Email" class="form-control" ng-model="Ctrl.editor.model.Email" readonly/>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" name="Name" class="form-control" placeholder="Имя"
+                               ng-model="Ctrl.editor.model.Contact.Name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Фамилия</label>
+                        <input type="text" name="Surname" class="form-control" placeholder="Фамилия"
+                               ng-model="Ctrl.editor.model.Contact.Surname"/>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-success' : UserPropForm.ContactPhone.$valid,
+                                               'has-error' :  UserPropForm.ContactPhone.$invalid && UserPropForm.ContactPhone.$dirty,
+                                               'has-error' : UserPropForm.ContactPhone.$invalid && Ctrl.editor.submited}">
+                        <label>Контактный телефон</label>
+                        <input type="tel" name="ContactPhone" class="form-control" placeholder="Контактный телефон" required
+                               ng-model="Ctrl.editor.model.Contact.ContactPhone" pattern="^\+(?:[0-9]●?){6,14}[0-9]$"/>
+                        <div ng-show="UserPropForm.ContactPhone.$dirty || Ctrl.editor.submited">
+                            <span class="text-danger" ng-show="UserPropForm.ContactPhone.$error.pattern">Введите валидный телефонный номер.</span>
+                            <span class="text-danger" ng-show="UserPropForm.ContactPhone.$error.required">Телефонный номер является обязательным.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skype</label>
+                        <input type="text" name="SkypeId" class="form-control" placeholder="Skype ID"
+                               ng-model="Ctrl.editor.model.Contact.SkypeId"/>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-success' : UserPropForm.IcqId.$valid && UserPropForm.IcqId.$dirty,
+                                               'has-error' :  UserPropForm.IcqId.$invalid && UserPropForm.IcqId.$dirty,
+                                               'has-error' : UserPropForm.IcqId.$invalid && Ctrl.editor.submited}">
+                        <label>Icq</label>
+                        <input type="text" name="IcqId" class="form-control" placeholder="Icq UIN"
+                               ng-model="Ctrl.editor.model.Contact.IcqId" pattern="^[0-9]{1,10}"/>
+                        <div ng-show="UserPropForm.IcqId.$dirty || Ctrl.editor.submited">
+                            <span class="text-danger" ng-show="UserPropForm.IcqId.$error.pattern">Введите валидный Icq UIN.</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success"
+                    ng-click="Ctrl.editor.model.$valid = UserPropForm.$valid"
+                    ng-disabled="Ctrl.editor.sumbitting">Сохранить</button>
+
+            <button type="button" class="btn btn-primary"
+                    ng-click="Ctrl.mode=''"
+                    ng-disabled="Ctrl.editor.sumbitting">Отмена</button>
+        </form>
+    </div>
 </div>

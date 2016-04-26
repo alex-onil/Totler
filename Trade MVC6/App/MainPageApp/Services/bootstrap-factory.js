@@ -52,7 +52,7 @@
                 }
             }
 
-            return $uibModal.open(opts);
+            return $uibModal.open(opts).result;
         }
 
         function $$ShowModalErr(header, messages) {

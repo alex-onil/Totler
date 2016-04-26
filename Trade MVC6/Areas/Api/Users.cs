@@ -25,13 +25,19 @@ namespace Trade_MVC6.Areas.Api
         private readonly IProvider1C _provider1C;
         private readonly IMapper _mapper;
         private readonly B2BDbContext _db;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public Users(UserManager<ApplicationUser> userManager, IProvider1C provider1C, IMapper mapper, B2BDbContext db)
+        public Users(UserManager<ApplicationUser> userManager, 
+                     IProvider1C provider1C, 
+                     IMapper mapper, 
+                     B2BDbContext db, 
+                     SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _provider1C = provider1C;
             _mapper = mapper;
             _db = db;
+            _signInManager = signInManager;
         }
 
         // GET: api/values
@@ -54,11 +60,15 @@ namespace Trade_MVC6.Areas.Api
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
+        //[HttpPost]
+        //public IActionResult Post([FromBody] UserViewModel value)
+        //{
+        //    if (!value.IsValid) return HttpBadRequest(value.ValidationMessages());
 
-        }
+
+
+        //    return Ok();
+        //}
 
         // POST api/values
         [HttpPost("{id:minlength(1)}")]
@@ -115,15 +125,32 @@ namespace Trade_MVC6.Areas.Api
             }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id:minlength(1)}")]
+        public async Task<IActionResult> Put(string id, [FromBody] UserViewModel value)
         {
-        }
+            var destUser = await _userManager.Users.Include(m => m.Contact).FirstOrDefaultAsync(u => u.Id.Equals(id));
+            if (!value.IsValid && destUser != null) return HttpBadRequest(value.ValidationMessages());
+            
+            _mapper.Map(value, destUser);
+            await _userManager.UpdateAsync(destUser);
+
+            var user = _mapper.Map<ApplicationUser, UserViewModel>(destUser, opt => opt.AfterMap(
+                                 (s, d) => d.Access1C = _userManager.IsInRoleAsync(s, Roles.User1C).Result));
+
+            return Ok(user);
+         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
+            var destUser = await _userManager.Users.Include(m => m.Contact).FirstOrDefaultAsync(u => u.Id.Equals(id));
+            if (destUser == null) return HttpBadRequest(new[] {"Пользователь не найден."});
+            if (destUser.UserName == ApplicationUser.Admin.UserName) return HttpBadRequest(new[] { "Не возможно удалить системного пользователя." });
+
+            var result = await _userManager.DeleteAsync(destUser);
+
+            return result.Succeeded ? (IActionResult) Ok() : HttpBadRequest(result.Errors.Select(e => e.Description));
         }
     }
 }
