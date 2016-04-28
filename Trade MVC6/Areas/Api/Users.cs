@@ -7,34 +7,37 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Trade_MVC6.Attributes;
+using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
+using Trade_MVC6.ViewModels.Admin;
 using Microsoft.Data.Entity;
+using Trade_MVC6.Models.B2BStrore;
 using System.Security.Claims;
-using Totler1C.BLL.Interfaces;
-using TotlerCore.BLL;
-using TotlerRepository.Models.Identity;
-using TotlerCore.BLL.Extensions;
-using TotlerRepository.Interfaces;
-using Trade_MVC6.Models.Admin;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Trade_MVC6.Areas.Api
 {
-    [Route("api/Users"), Authorize(Roles = "Admin"), ValidateHeaderAntiForgeryToken, AjaxValidate]
+    [Route("api/[controller]"), Authorize(Roles = "Admin"), ValidateHeaderAntiForgeryToken, AjaxValidate]
     public class Users : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProvider1C _provider1C;
         private readonly IMapper _mapper;
+        private readonly B2BDbContext _db;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public Users(UserManager<ApplicationUser> userManager, 
                      IProvider1C provider1C, 
-                     IMapper mapper)
+                     IMapper mapper, 
+                     B2BDbContext db, 
+                     SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _provider1C = provider1C;
             _mapper = mapper;
+            _db = db;
+            _signInManager = signInManager;
         }
 
         // GET: api/values
@@ -42,9 +45,10 @@ namespace Trade_MVC6.Areas.Api
         public Task<IList<UserViewModel>> Get() => Task.Run(() =>
         {
             IList<UserViewModel> users = new List<UserViewModel>();
-             var userBuf = _userManager.Users.Include(d => d.Contact).ToList();
+            var userBuf = _db.Users.Include(d => d.Contact).ToList();// _userManager.Users.Include(d => d.Contact).ToList()
             userBuf.ForEach(el => users.Add(_mapper.Map<ApplicationUser, UserViewModel>(el, opt => opt.AfterMap(
                 (s, d) => d.Access1C = _userManager.IsInRoleAsync(s, Roles.User1C).Result))));
+            //_mapper.Map<ApplicationUser, UserViewModel>(userBuf, users);
             return users;
         });
 
@@ -56,10 +60,22 @@ namespace Trade_MVC6.Areas.Api
         }
 
         // POST api/values
+        //[HttpPost]
+        //public IActionResult Post([FromBody] UserViewModel value)
+        //{
+        //    if (!value.IsValid) return HttpBadRequest(value.ValidationMessages());
+
+
+
+        //    return Ok();
+        //}
+
+        // POST api/values
         [HttpPost("{id:minlength(1)}")]
         public async Task<IActionResult> Activate(string id, string id1C)
         {
             //if (string.IsNullOrEmpty(id)) HttpBadRequest();
+            
             var user1C = (await _provider1C.Users.QueryAsync()).First(m => m.Id.Equals(id1C));
             var destUser = await _userManager.FindByIdAsync(id);
 

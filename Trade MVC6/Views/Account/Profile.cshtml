@@ -1,8 +1,6 @@
-﻿@using TotlerCore.BLL.Interfaces
-@using Trade_MVC6.Models.Account
-@using Trade_MVC6.Services
+﻿@using Trade_MVC6.Services
 @inject IJsonSerializer Serializer
-@model Trade_MVC6.Models.Account.ProfileViewModel
+@model Trade_MVC6.ViewModels.Account.ProfileViewModel
 
 <main ng-init="Ctrl.data = @Html.Raw(HtmlEncoder.HtmlEncode(await Serializer.StringifyAsync(Model)))">
     <form name="profileForm" class="panel panel-default form-horizontal" novalidate ng-submit="Ctrl.save()">

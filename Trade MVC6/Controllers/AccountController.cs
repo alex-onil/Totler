@@ -7,15 +7,14 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
+using Trade_MVC6.Models.B2BStrore;
+using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
+using Trade_MVC6.ViewModels.Account;
 using System.Linq;
 using Microsoft.AspNet.Identity.EntityFramework;
-using TotlerCore.BLL.Interfaces;
-using TotlerRepository.Interfaces;
-using TotlerRepository.Models.Identity;
 using Trade_MVC6.Attributes;
 using Trade_MVC6.Helpers;
-using Trade_MVC6.Models.Account;
 
 namespace Trade_MVC6.Controllers
     {
@@ -26,20 +25,20 @@ namespace Trade_MVC6.Controllers
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
-        private readonly IRepository _repository;
+        private readonly B2BDbContext _dbContext;
 
         public AccountController(SignInManager<ApplicationUser> signInManager,
                             UserManager<ApplicationUser> userManager,
                             ILoggerFactory loggerFactory,
                             IEmailSender emailSender,
                             IMapper mapper,
-                            IRepository repository)
+                            B2BDbContext dbContext)
             {
             _signInManager = signInManager;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapper = mapper;
-            _repository = repository;
+            _dbContext = dbContext;
             _logger = loggerFactory.CreateLogger<AccountController>();
 
             }
@@ -130,8 +129,7 @@ namespace Trade_MVC6.Controllers
             if (!model.IsValid) return HttpBadRequest(model.ValidationMessages().Select(n => n.ErrorMessage));
             var user = new ApplicationUser();
             _mapper.Map(model, user);
-            //_dbContext.Add(user.Contact, User);
-            var perResult = await _repository.CreateAsync(user.Contact);
+            _dbContext.Add(user.Contact, User);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
                 {

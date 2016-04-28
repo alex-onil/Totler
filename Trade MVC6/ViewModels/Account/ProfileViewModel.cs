@@ -1,22 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TotlerRepository.ModelValidation;
-using Trade_MVC6.Models.Shared;
+using Trade_MVC6.ViewModels.Shared;
 
-namespace Trade_MVC6.Models.Admin
-{
-    public class UserViewModel : AbstractValidator
+namespace Trade_MVC6.ViewModels.Account
+    {
+    public class ProfileViewModel : AbstractValidator
         {
-        public string Id { get; set; }
-
         [Required]
         [StringLength(15, ErrorMessage = "Длинна должна быть в пределах от {2} до {1} символов.", MinimumLength = 3)]
+        [Display(Name = "Псевдоним")]
         public string Nickname { get; set; }
 
         [Required]
         [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Название компании")]
         public string CompanyName { get; set; }
 
         public bool EmailConfirmed { get; set; }
@@ -24,7 +24,5 @@ namespace Trade_MVC6.Models.Admin
         public bool Access1C { get; set; }
 
         public ContactViewModel Contact { get; set; }
-
-        public string Account1CId { get; set; }
         }
-}
+    }

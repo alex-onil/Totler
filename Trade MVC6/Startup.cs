@@ -7,20 +7,14 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Totler1C.BLL;
-using Totler1C.BLL.Interfaces;
-using Totler1C.BLL.Providers;
-using TotlerCore.BLL;
-using TotlerCore.BLL.Interfaces;
-using TotlerCore.BLL.Services.JsonSerializer;
-using TotlerDb.DAL;
-using TotlerRepository.Models.Identity;
-using Trade_MVC6.Mapper;
+using Trade_MVC6.Models.AutoMapper;
+using Trade_MVC6.Models.B2BStrore;
+using Trade_MVC6.Models.Identity;
 using Trade_MVC6.Services;
 using Trade_MVC6.Services.EmailSender;
-using TotlerDb.DAL.Config;
-using TotlerRepository.Interfaces;
-
+using Trade_MVC6.Services.JsonSerializer;
+using Trade_MVC6.Services._1С;
+using Trade_MVC6.Services._1С.Providers;
 
 namespace Trade_MVC6
     {
@@ -43,7 +37,7 @@ namespace Trade_MVC6
             // Add EF service
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<AppDbContext>(opt =>
+                .AddDbContext<B2BDbContext>(opt =>
                     opt.UseSqlServer(Configuration["ConnectionStrings:TempDB"]));
 
             //Configure Identity middleware with ApplicationUser and the EF7 IdentityDbContext
@@ -57,7 +51,7 @@ namespace Trade_MVC6
                 config.Password.RequireUppercase = false;
 
             })
-            .AddEntityFrameworkStores<AppDbContext>()
+            .AddEntityFrameworkStores<B2BDbContext>()
             .AddDefaultTokenProviders();
 
             // Configure Identity service
@@ -89,25 +83,13 @@ namespace Trade_MVC6
             services.MapperConfigure();
 
             // Configure SMTP Robot
-            services.Configure<EmailSenderOptions>(config =>
-                {
-                    config.SmtpServerUrl = Configuration["SmtpRobot:SmtpServerUrl"];
-                    config.SmtpServerPort = int.Parse(Configuration["SmtpRobot:SmtpServerPort"]);
-                    config.SmtpRobotLogin = Configuration["SmtpRobot:SmtpRobotLogin"];
-                    config.SmtpRobotPass = Configuration["SmtpRobot:SmtpRobotPass"];
-                    config.SmtpAdminTargetEmail = Configuration["SmtpRobot:SmtpAdminTargetEmail"];
-                }).AddTransient<IEmailSender, EmailSimpleSender>();
-            //services.AddInstance<IEmailSender>(new EmailSimpleSender(Configuration));
-            
+            services.AddInstance<IEmailSender>(new EmailSimpleSender(Configuration));
 
             //Configure Serializer
             services.AddInstance<IJsonSerializer>(new SimpleSerializer());
 
             //Configure 1C Provider
             services.AddInstance<IProvider1C>(new Provider1C(new ProviderUsers1C(), null, null));
-
-            // Configure BLL
-            services.AddTransient<IRepository, Repository>();
 
             }
 
