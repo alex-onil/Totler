@@ -1,5 +1,4 @@
-﻿@using Trade_MVC6.Models.Identity
-
+﻿@using TotlerRepository.Models.Identity
 <div class="row navigation" ng-init="isAuth = @User.Identity.IsAuthenticated.ToString().ToLower(); isAdmin = @User.IsInRole(Roles.Admin).ToString().ToLower()">
     <nav class="navbar navbar-default col-sm-12" role="navigation">
         <div class="navbar-header">

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using Trade_MVC6.Models.AutoMapper.Profiles;
+using Trade_MVC6.Mapper.Profiles;
 
-namespace Trade_MVC6.Models.AutoMapper
+namespace Trade_MVC6.Mapper
 {
     public static class MapperExtensions
     {

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
+using Totler1C.BLL.Interfaces;
+using Totler1C.DAL.Models;
 using Trade_MVC6.Attributes;
-using Trade_MVC6.Models._1C;
 using Trade_MVC6.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
