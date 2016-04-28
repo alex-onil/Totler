@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Trade_MVC6.Models.Identity;
-using Trade_MVC6.Models.Identity.AccountDetails;
-using Trade_MVC6.ViewModels.Account;
-using Trade_MVC6.ViewModels.Shared;
+﻿using AutoMapper;
+using TotlerRepository.Models.Identity;
+using Trade_MVC6.Models.Account;
+using Trade_MVC6.Models.Shared;
 
-namespace Trade_MVC6.Models.AutoMapper.Profiles
+namespace Trade_MVC6.Mapper.Profiles
 {
     public class ProfileViewModelProfile : Profile
     {

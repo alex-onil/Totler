@@ -6,12 +6,9 @@
 
   "dependencies": {
     "AutoMapper": "4.2.1",
-    "EntityFramework.Commands": "7.0.0-rc1-final",
-    "EntityFramework.Core": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
     "MailKit": "1.3.0-beta7",
     "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
     "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
@@ -23,7 +20,11 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final"
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final",
+    "Totler1C.BLL": "1.0.0-*",
+    "TotlerCore.BLL": "1.0.0-*",
+    "TotlerDb.DAL": "1.0.0-*",
+    "TotlerRepository": "1.0.0-*"
   },
 
   "commands": {
@@ -33,7 +34,6 @@
   "frameworks": {
     "dnx451": {
       "dependencies": {
-        "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
       },
       "frameworkAssemblies": {
         "System.configuration": "4.0.0.0"

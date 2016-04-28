@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Trade_MVC6.ViewModels.Account
+namespace Trade_MVC6.Models.Account
 {
     public class ResetPasswordViewModel
     {

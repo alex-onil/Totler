@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Trade_MVC6.ViewModels.Shared
+namespace Trade_MVC6.Models.Shared
 {
     public class ContactViewModel
     {

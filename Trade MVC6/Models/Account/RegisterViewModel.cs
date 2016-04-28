@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TotlerRepository.ModelValidation;
 
-namespace Trade_MVC6.ViewModels.Account
+namespace Trade_MVC6.Models.Account
 {
     public class RegisterViewModel : AbstractValidator
         {

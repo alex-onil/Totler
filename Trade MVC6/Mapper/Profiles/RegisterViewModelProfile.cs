@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Trade_MVC6.Models.Identity;
-using Trade_MVC6.Models.Identity.AccountDetails;
-using Trade_MVC6.ViewModels.Account;
+using TotlerRepository.Models.Identity;
+using Trade_MVC6.Models.Account;
 
-namespace Trade_MVC6.Models.AutoMapper.Profiles
+namespace Trade_MVC6.Mapper.Profiles
 {
     public class RegisterViewModelProfile : Profile
     {
