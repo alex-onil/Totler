@@ -11,7 +11,7 @@
     <link href="~/lib/flat-ui/dist/css/vendor/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/flat-ui/dist/css/flat-ui.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/css/static.css" rel="stylesheet" />
+    <link href="~/css/root.min.css" rel="stylesheet" />
     <link href="~/css/login-window.css" rel="stylesheet"/>
     <link href="~/lib/angular/angular-csp.css" rel="stylesheet"/>
     <link href="~/lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
@@ -19,9 +19,6 @@
 </head>
 <body ng-init="antiforgery = '@Html.Raw(Context.RequestVerificationToken())'">
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    @*<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>*@
-    @*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
     <div class="container">
         @Html.Partial("Index.Menu")
         @RenderBody()

@@ -55,6 +55,7 @@ namespace Trade_MVC6.Areas.Api
             return "value";
         }
 
+
         // POST api/values
         [HttpPost("{id:minlength(1)}")]
         public async Task<IActionResult> Activate(string id, string id1C)

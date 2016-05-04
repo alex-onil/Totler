@@ -6,8 +6,6 @@ namespace TotlerRepository.Models.Identity
         {
         public string CompanyName { get; set; }
 
-        public int ContactForeignKey { get; set; }
-
         public ContactRecord Contact { get; set; }
 
         public string Account1CId { get; set; }

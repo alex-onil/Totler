@@ -97,8 +97,6 @@ namespace Trade_MVC6
                     config.SmtpRobotPass = Configuration["SmtpRobot:SmtpRobotPass"];
                     config.SmtpAdminTargetEmail = Configuration["SmtpRobot:SmtpAdminTargetEmail"];
                 }).AddTransient<IEmailSender, EmailSimpleSender>();
-            //services.AddInstance<IEmailSender>(new EmailSimpleSender(Configuration));
-            
 
             //Configure Serializer
             services.AddInstance<IJsonSerializer>(new SimpleSerializer());

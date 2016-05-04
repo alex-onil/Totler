@@ -130,8 +130,6 @@ namespace Trade_MVC6.Controllers
             if (!model.IsValid) return HttpBadRequest(model.ValidationMessages().Select(n => n.ErrorMessage));
             var user = new ApplicationUser();
             _mapper.Map(model, user);
-            //_dbContext.Add(user.Contact, User);
-            var perResult = await _repository.CreateAsync(user.Contact);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
                 {

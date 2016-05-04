@@ -77,7 +77,6 @@
         function sendUserRegistration(data) {
             var config = {
                 headers: { "__RequestVerificationToken": $rootScope.antiforgery }
-                //,xsrfHeaderName: "X-XSRF-TOKEN"
             }
             return $http.post(appConfig.sendRegister, data, config );
         }

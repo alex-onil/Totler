@@ -10,6 +10,7 @@
     "gulp-angular-filesort": "^1.1.1",
     "gulp-ngmin": "^0.3.0",
     "gulp-inject": "^3.0.0",
+    "gulp-sass": "^2.3.1",
     "rimraf": "2.2.8"
   }
 }

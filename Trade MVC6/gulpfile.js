@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='min:angularJs' Clean='clean' />
+﻿/// <binding Clean='clean' ProjectOpened='sass:watch, min:angular:watch' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -9,7 +9,8 @@ var gulp = require("gulp"),
     ngmin = require("gulp-ngmin"),
     ngAnnotate = require("gulp-ng-annotate"),
     angularFilesort = require("gulp-angular-filesort"),
-    inject = require('gulp-inject');
+    inject = require('gulp-inject'),
+    sass = require('gulp-sass');
 
 
 var paths = {
@@ -27,6 +28,11 @@ paths.concatCssDest = paths.webroot + "css/site.min.css";
 
 paths.angularApp = "./App/**/*.js";
 paths.angularJsDest = paths.webroot + "js/angular-app.min.js";
+
+// Sass path`s
+
+paths.sassFolder = "./sass/**/*.scss";
+paths.sassDestFileName = paths.webroot + "css/root.min.css";
 
 
 gulp.task("clean:js", function (cb) {
@@ -46,6 +52,18 @@ gulp.task("min:js", function () {
         .pipe(gulp.dest("."));
 });
 
+gulp.task("sass", function() {
+    return gulp.src(paths.sassFolder)
+        .pipe(sass().on('error', sass.logError))
+        .pipe(concat(paths.sassDestFileName))
+        //.pipe(cssmin())
+        .pipe(gulp.dest("."));
+});
+
+gulp.task('sass:watch', function () {
+    gulp.watch(paths.sassFolder, ['sass']);
+});
+
 gulp.task("min:angularJs", function() {
     return gulp.src(paths.angularApp)
         .pipe(inject(gulp.src(paths.angularApp).pipe(angularFilesort())))
@@ -54,7 +72,10 @@ gulp.task("min:angularJs", function() {
         //.pipe(ngmin()) // { dynamic: true }
         //.pipe(uglify({ mangle: false }))
         .pipe(gulp.dest("."));
+});
 
+gulp.task('min:angular:watch', function() {
+    gulp.watch(paths.angularApp, ['min:angularJs']);
 });
 
 gulp.task("min:css", function () {
